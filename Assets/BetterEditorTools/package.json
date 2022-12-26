@@ -1,0 +1,24 @@
+{
+  "name": "com.uurha.bettereditortools",
+  "displayName": "Better Editor Tools",
+  "description": "Collection of useful tools for Unity Editor",
+  "version": "0.0.1",
+  "unity": "2018.3",
+  "dependencies": {
+    "com.uurha.betterdatastructures": "0.0.1"
+  },
+  "author": {
+    "name": "Arcueid D'athemon",
+    "url": "https://github.com/uurha"
+  },
+  "changelogUrl": "https://github.com/uurha/BetterEditorTools",
+  "documentationUrl": "https://github.com/uurha/BetterEditorTools/tree/main#readme",
+  "license": "MIT",
+  "licensesUrl":"https://github.com/uurha/BetterEditorTools/blob/main/LICENSE",
+  "keywords": [
+    "editor",
+    "utilities",
+    "tools",
+    "extensions"
+  ]
+}
