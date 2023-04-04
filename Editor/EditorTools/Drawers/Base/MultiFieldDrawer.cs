@@ -8,15 +8,15 @@ namespace Better.EditorTools.Drawers.Base
 {
     public abstract class MultiFieldDrawer<T> : FieldDrawer where T : UtilityWrapper
     {
-        private protected WrapperCollection<T> _wrappers;
+        protected WrapperCollection<T> _wrappers;
 
         /// <summary>
         /// Method generates explicit typed collection inherited from <see cref="WrapperCollection{T}"/> 
         /// </summary>
         /// <returns></returns>
-        private protected abstract WrapperCollection<T> GenerateCollection();
+        protected abstract WrapperCollection<T> GenerateCollection();
 
-        private protected override void Deconstruct()
+        protected override void Deconstruct()
         {
             _wrappers.Deconstruct();
         }
@@ -27,7 +27,7 @@ namespace Better.EditorTools.Drawers.Base
             base.OnGUI(position, property, label);
         }
 
-        private protected virtual Type GetFieldType()
+        protected virtual Type GetFieldType()
         {
             var type = fieldInfo.FieldType;
             if (type.IsArray)
@@ -44,7 +44,7 @@ namespace Better.EditorTools.Drawers.Base
         /// <param name="handler"><see cref="BaseUtility{THandler}"/> used to validate current stored wrappers and gets instance for recently added property</param>
         /// <typeparam name="THandler"></typeparam>
         /// <returns>Returns true if wrapper for <paramref name="property"/> was already stored into <see cref="_wrappers"/></returns>
-        private protected bool ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler) where THandler : new()
+        protected bool ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler) where THandler : new()
         {
             var fieldType = GetFieldType();
             var contains = _wrappers.ContainsKey(property);

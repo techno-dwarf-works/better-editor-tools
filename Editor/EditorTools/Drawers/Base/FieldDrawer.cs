@@ -5,7 +5,7 @@ namespace Better.EditorTools.Drawers.Base
 {
     public abstract class FieldDrawer : PropertyDrawer
     {
-        private protected FieldDrawer()
+        protected FieldDrawer()
         {
             Selection.selectionChanged += OnSelectionChanged;
         }
@@ -22,7 +22,7 @@ namespace Better.EditorTools.Drawers.Base
             Deconstruct();
         }
 
-        private protected abstract void Deconstruct();
+        protected abstract void Deconstruct();
 
         /// <summary>
         /// Internal method called by Unity
@@ -43,14 +43,14 @@ namespace Better.EditorTools.Drawers.Base
             PostDraw(position, property, label);
         }
 
-        private protected virtual void DrawField(Rect position, SerializedProperty property, GUIContent label)
+        protected virtual void DrawField(Rect position, SerializedProperty property, GUIContent label)
         {
             var preparePropertyRect = PreparePropertyRect(position);
             EditorGUI.PropertyField(preparePropertyRect, property, label, true);
         }
 
-        private protected abstract bool PreDraw(ref Rect position, SerializedProperty property, GUIContent label);
-        private protected abstract Rect PreparePropertyRect(Rect original);
-        private protected abstract void PostDraw(Rect position, SerializedProperty property, GUIContent label);
+        protected abstract bool PreDraw(ref Rect position, SerializedProperty property, GUIContent label);
+        protected abstract Rect PreparePropertyRect(Rect original);
+        protected abstract void PostDraw(Rect position, SerializedProperty property, GUIContent label);
     }
 }
