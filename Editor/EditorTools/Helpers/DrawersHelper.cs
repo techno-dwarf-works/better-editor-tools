@@ -7,6 +7,7 @@ namespace Better.EditorTools.Helpers
     public static class DrawersHelper
     {
         private static float _spaceHeight = 6f;
+        private static GUIStyle _helpBoxStyle;
         public static float SpaceHeight => _spaceHeight;
 
         public const int MouseButtonLeft = 0;
@@ -33,8 +34,7 @@ namespace Better.EditorTools.Helpers
         /// <param name="type"></param>
         public static void HelpBox(Rect position, string message, IconType type)
         {
-            var style = new GUIStyle(EditorStyles.helpBox) { richText = true, fontSize = 11, wordWrap = true };
-            HelpBox(message, position, type, style);
+            HelpBox(message, position, type, CreateOrReturnHelpBoxStyle());
         }
 
         /// <summary>
@@ -113,6 +113,20 @@ namespace Better.EditorTools.Helpers
             var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
             position.height = style.CalcHeight(withIcon, position.width);
             EditorGUI.LabelField(position, GUIContent.none, withIcon, style);
+        }
+
+        public static float GetHelpBoxHeight(float width, string message, IconType type)
+        {
+            var icon = GetIconName(type);
+            var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
+            return CreateOrReturnHelpBoxStyle().CalcHeight(withIcon, width);
+        }
+
+        private static GUIStyle CreateOrReturnHelpBoxStyle()
+        {
+            if (_helpBoxStyle == null)
+                _helpBoxStyle = new GUIStyle(EditorStyles.helpBox) { richText = true, fontSize = 11, wordWrap = true };
+            return _helpBoxStyle;
         }
 
         public static int SelectionGrid(int selected, string[] texts, int xCount, GUIStyle style,

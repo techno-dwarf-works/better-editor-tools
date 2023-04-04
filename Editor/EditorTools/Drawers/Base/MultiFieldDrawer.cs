@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Better.EditorTools.Comparers;
 using Better.EditorTools.Utilities;
 using UnityEditor;
@@ -27,13 +28,19 @@ namespace Better.EditorTools.Drawers.Base
             base.OnGUI(position, property, label);
         }
 
-        protected virtual Type GetFieldType()
+        protected virtual Type GetFieldOrElementType()
         {
             var type = fieldInfo.FieldType;
             if (type.IsArray)
             {
                 return type.GetElementType();
             }
+
+            if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(List<>))
+            {
+                return type.GetGenericArguments()[0];
+            }
+
             return type;
         }
 
@@ -46,7 +53,7 @@ namespace Better.EditorTools.Drawers.Base
         /// <returns>Returns true if wrapper for <paramref name="property"/> was already stored into <see cref="_wrappers"/></returns>
         protected bool ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler) where THandler : new()
         {
-            var fieldType = GetFieldType();
+            var fieldType = GetFieldOrElementType();
             var contains = _wrappers.ContainsKey(property);
             if (contains)
             {
