@@ -36,7 +36,8 @@ namespace Better.EditorTools.Drawers.Base
                 return type.GetElementType();
             }
 
-            if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(List<>))
+            var genericTypeDefinition = type.GetGenericTypeDefinition();
+            if (type.IsGenericType && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition.IsSubclassOf(typeof(List<>))))
             {
                 return type.GetGenericArguments()[0];
             }
