@@ -13,8 +13,8 @@ namespace Better.EditorTools.Utilities
     {
         private static THandler _instance;
 
-        private protected HashSet<Type> _availableTypes;
-        private protected WrappersTypeCollection _gizmoWrappersCollection;
+        protected HashSet<Type> _availableTypes;
+        protected WrappersTypeCollection _gizmoWrappersCollection;
 
         public static THandler Instance
         {
@@ -29,7 +29,7 @@ namespace Better.EditorTools.Utilities
             }
         }
 
-        private protected BaseUtility()
+        protected BaseUtility()
         {
             Construct();
         }
@@ -40,7 +40,7 @@ namespace Better.EditorTools.Utilities
             _availableTypes = GenerateAvailable();
         }
 
-        private protected Dictionary<Type, Type> GetWrapperDictionary(Type type)
+        protected Dictionary<Type, Type> GetWrapperDictionary(Type type)
         {
             if (_gizmoWrappersCollection.TryGetValue(type, out var dictionary))
             {
@@ -85,7 +85,7 @@ namespace Better.EditorTools.Utilities
         /// <seealso cref="GenerateAvailable"/>
         /// </summary>
         /// <returns></returns>
-        private protected abstract WrappersTypeCollection GenerateCollection();
+        protected abstract WrappersTypeCollection GenerateCollection();
 
         /// <summary>
         /// Types collection for <see cref="IsSupported"/> checks
@@ -101,7 +101,7 @@ namespace Better.EditorTools.Utilities
         /// <seealso cref="GenerateCollection"/>
         /// </summary>
         /// <returns></returns>
-        private protected abstract HashSet<Type> GenerateAvailable();
+        protected abstract HashSet<Type> GenerateAvailable();
 
         /// <summary>
         /// Generate ready to use wrapper's instance by dictionary from <see cref="GetWrapperDictionary"/>
