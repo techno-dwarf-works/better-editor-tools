@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Better.EditorTools.Comparers;
 using Better.EditorTools.Utilities;
+using Better.Extensions.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,19 +31,7 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            var type = fieldInfo.FieldType;
-            if (type.IsArray)
-            {
-                return type.GetElementType();
-            }
-
-            var genericTypeDefinition = type.GetGenericTypeDefinition();
-            if (type.IsGenericType && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition.IsSubclassOf(typeof(List<>))))
-            {
-                return type.GetGenericArguments()[0];
-            }
-
-            return type;
+            return fieldInfo.FieldType.GetArrayOrListElementType();
         }
 
         /// <summary>
