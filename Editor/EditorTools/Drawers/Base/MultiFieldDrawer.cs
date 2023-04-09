@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Better.EditorTools.Comparers;
 using Better.EditorTools.Utilities;
 using Better.Extensions.Runtime;
@@ -31,7 +30,7 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            return fieldInfo.FieldType.GetArrayOrListElementType();
+            return fieldInfo.GetArrayOrListElementType();
         }
 
         /// <summary>
