@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 
-namespace Better.EditorTools.Comparers
+namespace Better.EditorTools
 {
     public static class SerializedPropertyExtensions
     {
