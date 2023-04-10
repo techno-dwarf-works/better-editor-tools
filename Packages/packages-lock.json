@@ -156,14 +156,14 @@
       "url": "https://packages.unity.com"
     },
     "com.uurha.betterdatastructures": {
-      "version": "0.0.4",
+      "version": "0.1.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "com.uurha.betterextensions": {
-      "version": "1.0.0",
+      "version": "1.0.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
