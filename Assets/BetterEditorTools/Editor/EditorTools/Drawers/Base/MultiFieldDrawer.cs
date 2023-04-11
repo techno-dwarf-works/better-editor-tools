@@ -30,7 +30,10 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            return fieldInfo.GetArrayOrListElementType();
+            if (fieldInfo.IsArrayOrList())
+                return fieldInfo.GetArrayOrListElementType();
+
+            return fieldInfo.FieldType;
         }
 
         /// <summary>
