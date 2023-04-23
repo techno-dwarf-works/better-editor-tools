@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Better.EditorTools.Drawers.Base;
+using UnityEditor;
 
 namespace Better.EditorTools.Utilities
 {
@@ -57,11 +58,22 @@ namespace Better.EditorTools.Utilities
         /// <typeparam name="T"></typeparam>
         public void ValidateCachedProperties<T>(WrapperCollection<T> gizmoWrappers) where T : UtilityWrapper
         {
+            List<SerializedProperty> keysToRemove = null;
             foreach (var value in gizmoWrappers)
             {
-                if (!IsSupported(value.Value.Type))
+                if (IsSupported(value.Value.Type)) continue;
+                if (keysToRemove == null)
                 {
-                    gizmoWrappers.Remove(value.Key);
+                    keysToRemove = new List<SerializedProperty>();
+                }
+                keysToRemove.Add(value.Key);
+            }
+
+            if (keysToRemove != null)
+            {
+                foreach (var serializedProperty in keysToRemove)
+                {
+                    gizmoWrappers.Remove(serializedProperty);
                 }
             }
         }
