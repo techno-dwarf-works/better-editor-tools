@@ -5,8 +5,8 @@ namespace Better.EditorTools.CustomEditors
 {
     public abstract class EditorExtension
     {
-        private protected readonly Object _target;
-        private protected readonly SerializedObject _serializedObject;
+        protected readonly Object _target;
+        protected readonly SerializedObject _serializedObject;
 
         protected EditorExtension(Object target, SerializedObject serializedObject)
         {
