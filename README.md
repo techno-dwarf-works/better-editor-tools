@@ -4,7 +4,7 @@
 Collections of useful tools for Unity Editor. Such as:
 1. DrawerHelpers
 2. Better drop down
-3. MuiltyEditor
+3. MultiEditor
 
 ## MultiEditor Usage
 
