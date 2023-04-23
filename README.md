@@ -4,6 +4,39 @@
 Collections of useful tools for Unity Editor. Such as:
 1. DrawerHelpers
 2. Better drop down
+3. MuiltyEditor
+
+## MultiEditor Usage
+
+```c#
+[BetterEditor(typeof(CustomClass), true, Order = 999, OverrideDefaultEditor = false)]
+public class CustomEditor : EditorExtension
+{
+    public CustomEditor(Object target, SerializedObject serializedObject) : base(target, serializedObject)
+    {
+    }
+
+    public override void OnDisable()
+    {
+       //This method called than editor disables
+    }
+
+    public override void OnEnable()
+    {
+       //This method called just right after instance created
+    }
+
+    public override void OnInspectorGUI()
+    {
+       //Use to draw your inspector
+    }
+
+    public override void OnChanged()
+    {
+       //Called when object data in editor is changed
+    }
+}
+```
 
 ## Install
 [How to istall](https://github.com/uurha/BetterPluginCollection/wiki/How-to-install)
