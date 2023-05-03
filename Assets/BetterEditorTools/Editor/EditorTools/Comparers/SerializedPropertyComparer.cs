@@ -8,6 +8,7 @@ namespace Better.EditorTools.Comparers
     {
         public bool Equals(SerializedProperty x, SerializedProperty y)
         {
+            if (x.IsDisposed() || y.IsDisposed()) return false;
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
@@ -17,7 +18,7 @@ namespace Better.EditorTools.Comparers
 
         public int GetHashCode(SerializedProperty obj)
         {
-            return (obj.propertyPath != null ? obj.propertyPath.GetHashCode() : 0);
+            return !obj.IsDisposed() && obj.propertyPath != null ? obj.propertyPath.GetHashCode() : 0;
         }
     }
 }
