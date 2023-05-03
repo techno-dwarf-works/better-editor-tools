@@ -10,6 +10,8 @@ namespace Better.EditorTools
 {
     public static class SerializedPropertyExtensions
     {
+        private const BindingFlags FieldsBindingFlags = BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+        
         public static Type GetManagedType(this SerializedProperty property)
         {
 #if UNITY_2021_1_OR_NEWER
@@ -33,8 +35,29 @@ namespace Better.EditorTools
                 .SingleOrDefault(assembly => assembly.GetName().Name == name);
         }
 
+        public static bool IsDisposed(this SerializedProperty property)
+        {
+            if (property == null || property.serializedObject == null)
+            {
+                return false;
+            }
+
+            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", FieldsBindingFlags);
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", FieldsBindingFlags);
+            try
+            {
+                var propertyPrt = (IntPtr)propertyPrtInfo.GetValue(property);
+                var objectPrt = (IntPtr)objectPrtInfo.GetValue(property.serializedObject);
+                return propertyPrt != IntPtr.Zero && objectPrt != IntPtr.Zero;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         //https://gist.github.com/aholkner/214628a05b15f0bb169660945ac7923b
-        
+
         /// <summary>
         /// Get the value of the serialized property.
         /// </summary>
