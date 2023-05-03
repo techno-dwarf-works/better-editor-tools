@@ -41,7 +41,6 @@ namespace Better.EditorTools
             {
                 return false;
             }
-            // if (property.m_NativePropertyPtr == IntPtr.Zero || property.serializedObject == null || property.serializedObject.m_NativeObjectPtr == IntPtr.Zero)
 
             var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", FieldsBindingFlags);
             var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", FieldsBindingFlags);
