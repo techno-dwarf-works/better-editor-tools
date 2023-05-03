@@ -39,7 +39,7 @@ namespace Better.EditorTools
         {
             if (property == null || property.serializedObject == null)
             {
-                return false;
+                return true;
             }
 
             var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", FieldsBindingFlags);
@@ -48,7 +48,7 @@ namespace Better.EditorTools
             {
                 var propertyPrt = (IntPtr)propertyPrtInfo.GetValue(property);
                 var objectPrt = (IntPtr)objectPrtInfo.GetValue(property.serializedObject);
-                return propertyPrt != IntPtr.Zero && objectPrt != IntPtr.Zero;
+                return propertyPrt == IntPtr.Zero || objectPrt == IntPtr.Zero;
             }
             catch
             {
