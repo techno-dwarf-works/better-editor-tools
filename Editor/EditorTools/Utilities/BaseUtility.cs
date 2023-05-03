@@ -77,6 +77,7 @@ namespace Better.EditorTools.Utilities
                 }
             }
         }
+        
 
         /// <summary>
         /// Type collection for <see cref="GetUtilityWrapper"/>.
