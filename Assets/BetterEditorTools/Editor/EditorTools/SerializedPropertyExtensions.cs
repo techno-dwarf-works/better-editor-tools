@@ -10,8 +10,9 @@ namespace Better.EditorTools
 {
     public static class SerializedPropertyExtensions
     {
-        private const BindingFlags FieldsBindingFlags = BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
-        
+        private const BindingFlags FieldsBindingFlags =
+            BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+
         public static Type GetManagedType(this SerializedProperty property)
         {
 #if UNITY_2021_1_OR_NEWER
@@ -35,6 +36,16 @@ namespace Better.EditorTools
                 .SingleOrDefault(assembly => assembly.GetName().Name == name);
         }
 
+        public static bool IsArrayElement(this SerializedProperty property)
+        {
+            return property.propertyPath.EndsWith("]");
+        }
+
+        public static string GetArrayNameFromPath(this SerializedProperty property)
+        {
+            return SerializedPropertyDefines.ArrayDataRegex.Replace(property.propertyPath, "");
+        }
+
         public static bool IsDisposed(this SerializedProperty property)
         {
             if (property == null || property.serializedObject == null)
@@ -46,14 +57,19 @@ namespace Better.EditorTools
             var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", FieldsBindingFlags);
             try
             {
-                var propertyPrt = (IntPtr)propertyPrtInfo.GetValue(property);
-                var objectPrt = (IntPtr)objectPrtInfo.GetValue(property.serializedObject);
-                return propertyPrt == IntPtr.Zero || objectPrt == IntPtr.Zero;
+                if (propertyPrtInfo != null && objectPrtInfo != null)
+                {
+                    var propertyPrt = (IntPtr)propertyPrtInfo.GetValue(property);
+                    var objectPrt = (IntPtr)objectPrtInfo.GetValue(property.serializedObject);
+                    return propertyPrt == IntPtr.Zero || objectPrt == IntPtr.Zero;
+                }
             }
             catch
             {
                 return false;
             }
+
+            return false;
         }
 
         //https://gist.github.com/aholkner/214628a05b15f0bb169660945ac7923b
@@ -122,7 +138,6 @@ namespace Better.EditorTools
             public int elementIndex;
         }
 
-        private static Regex arrayElementRegex = new Regex(@"\GArray\.data\[(\d+)\]", RegexOptions.Compiled);
 
         /// <summary>
         /// Parse the next path component from a SerializedProperty.propertyPath.  For simple field/property access,
@@ -151,7 +166,7 @@ namespace Better.EditorTools
             if (index >= propertyPath.Length)
                 return false;
 
-            var arrayElementMatch = arrayElementRegex.Match(propertyPath, index);
+            var arrayElementMatch = SerializedPropertyDefines.ArrayElementRegex.Match(propertyPath, index);
             if (arrayElementMatch.Success)
             {
                 index += arrayElementMatch.Length + 1; // Skip past next '.'
