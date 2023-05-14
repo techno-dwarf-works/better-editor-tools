@@ -161,9 +161,9 @@ namespace Better.EditorTools
             }
 
             // we are looking for array element only when the path ends with Array.data[x]
-            var lookingForArrayElement = Regex.IsMatch(path, SerializedPropertyDefines.ArrayDataRegex.ToString() + "$");
+            var lookingForArrayElement = Regex.IsMatch(path, SerializedPropertyDefines.ArrayDataWithIndexRegex.ToString() + "$");
             // remove any Array.data[x] from the path because it is prevents cache searching.
-            path = SerializedPropertyDefines.ArrayDataRegex.Replace(path, ".___ArrayElement___");
+            path = SerializedPropertyDefines.ArrayDataWithIndexRegex.Replace(path, ".___ArrayElement___");
 
             FieldInfo fieldInfo = null;
             var type = host;

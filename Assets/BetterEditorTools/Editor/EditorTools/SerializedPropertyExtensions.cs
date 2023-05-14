@@ -41,9 +41,28 @@ namespace Better.EditorTools
             return property.propertyPath.EndsWith("]");
         }
 
+        public static int GetArrayIndex(this SerializedProperty p)
+        {
+            var matches = SerializedPropertyDefines.ArrayIndexRegex.Matches(p.propertyPath);
+            if (matches.Count > 0)
+            {
+                if (int.TryParse(matches[matches.Count - 1].Name, out var result))
+                {
+                    return result;
+                }
+            }
+
+            return -1;
+        }
+
         public static string GetArrayNameFromPath(this SerializedProperty property)
         {
-            return SerializedPropertyDefines.ArrayDataRegex.Replace(property.propertyPath, "");
+            return SerializedPropertyDefines.ArrayDataWithIndexRegex.Replace(property.propertyPath, "");
+        }
+
+        public static string GetArrayPath(this SerializedProperty property)
+        {
+            return SerializedPropertyDefines.ArrayRegex.Replace(property.propertyPath, "");
         }
 
         public static bool IsDisposed(this SerializedProperty property)
