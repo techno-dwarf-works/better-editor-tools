@@ -23,6 +23,7 @@ namespace Better.EditorTools
 
     public static class SerializedPropertyUtil
     {
+        
         [DidReloadScripts]
         private static void Reload()
         {
@@ -150,7 +151,6 @@ namespace Better.EditorTools
             return managedReferenceInstanceType != null;
         }
 
-
         public static FieldInfoCache GetFieldInfoFromPropertyPath(Type host, string path)
         {
             var cache = new Cache(host, path);
@@ -160,11 +160,10 @@ namespace Better.EditorTools
                 return fieldInfoCache;
             }
 
-            const string arrayData = @"\.Array\.data\[[0-9]+\]";
             // we are looking for array element only when the path ends with Array.data[x]
-            var lookingForArrayElement = Regex.IsMatch(path, arrayData + "$");
+            var lookingForArrayElement = Regex.IsMatch(path, SerializedPropertyDefines.ArrayDataRegex.ToString() + "$");
             // remove any Array.data[x] from the path because it is prevents cache searching.
-            path = Regex.Replace(path, arrayData, ".___ArrayElement___");
+            path = SerializedPropertyDefines.ArrayDataRegex.Replace(path, ".___ArrayElement___");
 
             FieldInfo fieldInfo = null;
             var type = host;
