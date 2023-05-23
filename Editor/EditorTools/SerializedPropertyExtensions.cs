@@ -87,17 +87,17 @@ namespace Better.EditorTools
             }
             catch
             {
-                return false;
+                return true;
             }
 
-            return false;
+            return true;
         }
         
         public static bool Verify(this SerializedProperty property)
         {
             if (property == null || property.serializedObject == null)
             {
-                return true;
+                return false;
             }
 
             var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", FieldsBindingFlags);
