@@ -11,7 +11,9 @@ namespace Better.EditorTools
     public static class SerializedPropertyExtensions
     {
         private const BindingFlags FieldsBindingFlags =
-            BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+        private const int IteratorNotAtEnd = 2;
 
         public static Type GetManagedType(this SerializedProperty property)
         {
@@ -81,6 +83,31 @@ namespace Better.EditorTools
                     var propertyPrt = (IntPtr)propertyPrtInfo.GetValue(property);
                     var objectPrt = (IntPtr)objectPrtInfo.GetValue(property.serializedObject);
                     return propertyPrt == IntPtr.Zero || objectPrt == IntPtr.Zero;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
+        
+        public static bool Verify(this SerializedProperty property)
+        {
+            if (property == null || property.serializedObject == null)
+            {
+                return true;
+            }
+
+            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", FieldsBindingFlags);
+            
+            try
+            {
+                if (verifyMethod != null)
+                {
+                    verifyMethod.Invoke(property, new object[] { IteratorNotAtEnd });
+                    return true;
                 }
             }
             catch
