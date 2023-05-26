@@ -1,5 +1,6 @@
 ﻿using System;
 using Better.EditorTools.Comparers;
+using Better.EditorTools.Helpers.Caching;
 using Better.EditorTools.Utilities;
 using Better.Extensions.Runtime;
 using UnityEditor;
@@ -11,19 +12,6 @@ namespace Better.EditorTools.Drawers.Base
     public abstract class MultiFieldDrawer<T> : FieldDrawer where T : UtilityWrapper
     {
         private static readonly Cache CacheField = new Cache();
-        
-        protected class Cache
-        {
-            public bool IsValid { get; private set; }
-            public WrapperCollectionValue<T> Value { get; private set; }
-
-            public Cache Set(bool isValid, WrapperCollectionValue<T> value)
-            {
-                IsValid = isValid;
-                Value = value;
-                return this;
-            }
-        }
 
         protected WrapperCollection<T> _wrappers;
 
@@ -63,23 +51,12 @@ namespace Better.EditorTools.Drawers.Base
         protected Cache ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler)
             where THandler : new()
         {
-            var fieldType = GetFieldOrElementType();
-            if (_wrappers.TryGetValue(property, out var wrapperCollectionValue))
-            {
-                handler.ValidateCachedProperties(_wrappers);
-                return CacheField.Set(true, wrapperCollectionValue);
-            }
+            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), attribute.GetType(), handler);
+            return CacheField;
+        }
 
-            var wrapper = handler.GetUtilityWrapper<T>(fieldType, attribute.GetType());
-            if (wrapper == null)
-            {
-                return CacheField.Set(false, null);
-            }
-
-            var collectionValue = new WrapperCollectionValue<T>(wrapper, fieldType);
-            _wrappers.Add(property, collectionValue);
-
-            return CacheField.Set(false, collectionValue);
+        protected class Cache : Cache<WrapperCollectionValue<T>>
+        {
         }
     }
 }
