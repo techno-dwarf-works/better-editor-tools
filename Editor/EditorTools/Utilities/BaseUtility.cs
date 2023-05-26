@@ -50,33 +50,6 @@ namespace Better.EditorTools.Utilities
 
             throw new KeyNotFoundException($"Supported types not found for {type}");
         }
-
-        /// <summary>
-        /// Validates stored properties if their <see cref="WrapperCollectionValue{T}.Type"/> supported
-        /// </summary>
-        /// <param name="gizmoWrappers"></param>
-        /// <typeparam name="T"></typeparam>
-        public void ValidateCachedProperties<T>(WrapperCollection<T> gizmoWrappers) where T : UtilityWrapper
-        {
-            List<SerializedProperty> keysToRemove = null;
-            foreach (var value in gizmoWrappers)
-            {
-                if (IsSupported(value.Value.Type)) continue;
-                if (keysToRemove == null)
-                {
-                    keysToRemove = new List<SerializedProperty>();
-                }
-                keysToRemove.Add(value.Key);
-            }
-
-            if (keysToRemove != null)
-            {
-                foreach (var serializedProperty in keysToRemove)
-                {
-                    gizmoWrappers.Remove(serializedProperty);
-                }
-            }
-        }
         
 
         /// <summary>
@@ -145,6 +118,38 @@ namespace Better.EditorTools.Utilities
         public virtual bool IsSupported(Type type)
         {
             return _availableTypes.Contains(type);
+        }
+    }
+
+    public static class BaseUtilityExtension
+    {
+        /// <summary>
+        /// Validates stored properties if their <see cref="WrapperCollectionValue{T}.Type"/> supported
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="gizmoWrappers"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="THandler"></typeparam>
+        public static void ValidateCachedProperties<THandler, T>(this BaseUtility<THandler> handler, WrapperCollection<T> gizmoWrappers) where T : UtilityWrapper where THandler : new()
+        {
+            List<SerializedProperty> keysToRemove = null;
+            foreach (var value in gizmoWrappers)
+            {
+                if (handler.IsSupported(value.Value.Type)) continue;
+                if (keysToRemove == null)
+                {
+                    keysToRemove = new List<SerializedProperty>();
+                }
+                keysToRemove.Add(value.Key);
+            }
+
+            if (keysToRemove != null)
+            {
+                foreach (var serializedProperty in keysToRemove)
+                {
+                    gizmoWrappers.Remove(serializedProperty);
+                }
+            }
         }
     }
 }
