@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Better.EditorTools.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -71,8 +72,8 @@ namespace Better.EditorTools
                 return true;
             }
 
-            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", SerializedPropertyDefines.FieldsBindingFlags);
-            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", SerializedPropertyDefines.FieldsBindingFlags);
+            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", BetterEditorDefines.FieldsFlags);
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", BetterEditorDefines.FieldsFlags);
             try
             {
                 if (propertyPrtInfo != null && objectPrtInfo != null)
@@ -97,7 +98,7 @@ namespace Better.EditorTools
                 return false;
             }
 
-            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", SerializedPropertyDefines.FieldsBindingFlags);
+            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", BetterEditorDefines.FieldsFlags);
             
             try
             {
