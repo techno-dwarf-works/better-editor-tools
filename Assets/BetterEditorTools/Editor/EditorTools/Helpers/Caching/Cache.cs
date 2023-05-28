@@ -10,5 +10,14 @@ namespace Better.EditorTools.Helpers.Caching
             IsValid = isValid;
             Value = value;
         }
+
+        public Cache<T> Copy()
+        {
+            return new Cache<T>()
+            {
+                IsValid = IsValid,
+                Value = Value
+            };
+        }
     }
 }
