@@ -12,9 +12,6 @@ namespace Better.EditorTools
         
         public static readonly Regex ArrayRegex = new Regex(@"\.Array\.data", RegexOptions.Compiled);
         
-        
-        public const BindingFlags FieldsBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        
         public const int IteratorNotAtEnd = 2;
     }
 }
