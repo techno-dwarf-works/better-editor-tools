@@ -10,10 +10,7 @@ namespace Better.EditorTools
 {
     public static class SerializedPropertyExtensions
     {
-        private const BindingFlags FieldsBindingFlags =
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-        private const int IteratorNotAtEnd = 2;
 
         public static Type GetManagedType(this SerializedProperty property)
         {
@@ -74,8 +71,8 @@ namespace Better.EditorTools
                 return true;
             }
 
-            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", FieldsBindingFlags);
-            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", FieldsBindingFlags);
+            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", SerializedPropertyDefines.FieldsBindingFlags);
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", SerializedPropertyDefines.FieldsBindingFlags);
             try
             {
                 if (propertyPrtInfo != null && objectPrtInfo != null)
@@ -100,13 +97,13 @@ namespace Better.EditorTools
                 return false;
             }
 
-            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", FieldsBindingFlags);
+            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", SerializedPropertyDefines.FieldsBindingFlags);
             
             try
             {
                 if (verifyMethod != null)
                 {
-                    verifyMethod.Invoke(property, new object[] { IteratorNotAtEnd });
+                    verifyMethod.Invoke(property, new object[] { SerializedPropertyDefines.IteratorNotAtEnd });
                     return true;
                 }
             }
