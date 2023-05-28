@@ -158,20 +158,32 @@ namespace Better.EditorTools
         /// <param name="value"></param>
         public static void SetValueNoRecord(this SerializedProperty property, object value)
         {
+            var container = GetPropertyContainer(property, out var deferredToken);
+
+            SetPathComponentValue(container, deferredToken, value);
+        }
+
+        public static object GetPropertyContainer(this SerializedProperty property)
+        {
+            return GetPropertyContainer(property, out _);
+        }
+        
+        private static object GetPropertyContainer(SerializedProperty property, out PropertyPathComponent deferredToken)
+        {
             string propertyPath = property.propertyPath;
             object container = property.serializedObject.targetObject;
 
             int i = 0;
-            NextPathComponent(propertyPath, ref i, out var deferredToken);
+            NextPathComponent(propertyPath, ref i, out deferredToken);
             while (NextPathComponent(propertyPath, ref i, out var token))
             {
                 container = GetPathComponentValue(container, deferredToken);
                 deferredToken = token;
             }
-
             Debug.Assert(!container.GetType().IsValueType,
-                $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary.  Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
-            SetPathComponentValue(container, deferredToken, value);
+                $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary. Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
+
+            return container;
         }
 
         /// <summary>
