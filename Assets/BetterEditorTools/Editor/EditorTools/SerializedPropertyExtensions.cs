@@ -189,8 +189,8 @@ namespace Better.EditorTools
         /// </summary>
         private struct PropertyPathComponent
         {
-            public string propertyName;
-            public int elementIndex;
+            public string PropertyName { get; set; }
+            public int ElementIndex { get; set; }
         }
 
 
@@ -225,19 +225,19 @@ namespace Better.EditorTools
             if (arrayElementMatch.Success)
             {
                 index += arrayElementMatch.Length + 1; // Skip past next '.'
-                component.elementIndex = int.Parse(arrayElementMatch.Groups[1].Value);
+                component.ElementIndex = int.Parse(arrayElementMatch.Groups[1].Value);
                 return true;
             }
 
             int dot = propertyPath.IndexOf('.', index);
             if (dot == -1)
             {
-                component.propertyName = propertyPath.Substring(index);
+                component.PropertyName = propertyPath.Substring(index);
                 index = propertyPath.Length;
             }
             else
             {
-                component.propertyName = propertyPath.Substring(index, dot - index);
+                component.PropertyName = propertyPath.Substring(index, dot - index);
                 index = dot + 1; // Skip past next '.'
             }
 
@@ -246,18 +246,18 @@ namespace Better.EditorTools
 
         private static object GetPathComponentValue(object container, PropertyPathComponent component)
         {
-            if (component.propertyName == null)
-                return ((IList)container)[component.elementIndex];
+            if (component.PropertyName == null)
+                return ((IList)container)[component.ElementIndex];
             else
-                return GetMemberValue(container, component.propertyName);
+                return GetMemberValue(container, component.PropertyName);
         }
 
         private static void SetPathComponentValue(object container, PropertyPathComponent component, object value)
         {
-            if (component.propertyName == null)
-                ((IList)container)[component.elementIndex] = value;
+            if (component.PropertyName == null)
+                ((IList)container)[component.ElementIndex] = value;
             else
-                SetMemberValue(container, component.propertyName, value);
+                SetMemberValue(container, component.PropertyName, value);
         }
 
         private static object GetMemberValue(object container, string name)
