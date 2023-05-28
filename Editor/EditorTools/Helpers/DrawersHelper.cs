@@ -79,7 +79,12 @@ namespace Better.EditorTools.Helpers
 
         public static string FormatBoldItalic(string text)
         {
-            return FormatBold(FormatItalic(text));
+            return $"<b><i>{text}</i></b>";
+        }
+
+        public static string BeautifyFormat(string text)
+        {
+            return $"\"<b><i>{text}</i></b>\"";
         }
 
         /// <summary>
