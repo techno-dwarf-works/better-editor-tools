@@ -34,13 +34,9 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            if (fieldInfo.IsArrayOrList())
-                return fieldInfo.GetArrayOrListElementType();
-
-            return fieldInfo.FieldType;
+            return fieldInfo.GetFieldOrElementType();
         }
-
-
+        
         /// <summary>
         /// Validates if <see cref="_wrappers"/> contains property by <see cref="SerializedPropertyComparer"/>
         /// </summary>
