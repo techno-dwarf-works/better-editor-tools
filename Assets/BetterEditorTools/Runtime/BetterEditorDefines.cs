@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Better.EditorTools.Runtime
+namespace Better.Tools.Runtime
 {
     public class BetterEditorDefines
     {
