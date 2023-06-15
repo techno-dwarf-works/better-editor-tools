@@ -1,6 +1,6 @@
 {
     "name": "BetterEditorTools.Runtime",
-    "rootNamespace": "Better.EditorTools",
+    "rootNamespace": "Better.Tools",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
