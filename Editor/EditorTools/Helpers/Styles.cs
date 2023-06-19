@@ -82,7 +82,6 @@ namespace Better.EditorTools.Helpers
         {
             _proBackgroundColor = new Color32(56, 56, 56, 255);
             _backgroundColor = new Color32(194, 194, 194, 255);
-            _toolbarSearchField = GetStyle("ToolbarSeachTextField");
             _button = new GUIStyle(GUI.skin.button)
             {
                 alignment = TextAnchor.MiddleLeft,
@@ -102,8 +101,15 @@ namespace Better.EditorTools.Helpers
             };
 
             _itemStyle = GetStyle("DD ItemStyle");
+#if UNITY_2022_3_OR_NEWER
+            _toolbarSearchField = GetStyle("ToolbarSearchTextField");
+            _toolbarSearchFieldCancelButton = GetStyle("ToolbarSearchCancelButton");
+            _toolbarSearchFieldCancelButtonEmpty = GetStyle("ToolbarSearchCancelButtonEmpty");
+#else
+            _toolbarSearchField = GetStyle("ToolbarSeachTextField");
             _toolbarSearchFieldCancelButton = GetStyle("ToolbarSeachCancelButton");
             _toolbarSearchFieldCancelButtonEmpty = GetStyle("ToolbarSeachCancelButtonEmpty");
+#endif
 
             _header = GetStyle("DD HeaderStyle");
             _checkMark = GetStyle("DD ItemCheckmark");
