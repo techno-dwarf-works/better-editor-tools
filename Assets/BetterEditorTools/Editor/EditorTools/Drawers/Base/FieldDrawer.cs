@@ -12,6 +12,12 @@ namespace Better.EditorTools.Drawers.Base
 
         ~FieldDrawer()
         {
+            EditorApplication.update += DeconstructOnMainThread;
+        }
+
+        private void DeconstructOnMainThread()
+        {
+            EditorApplication.update -= DeconstructOnMainThread;
             Selection.selectionChanged -= OnSelectionChanged;
             Deconstruct();
         }
