@@ -39,8 +39,8 @@ namespace Better.EditorTools.SettingsTools
             if (!Directory.Exists(absolutePath))
             {
                 Directory.CreateDirectory(absolutePath);
+                AssetDatabase.Refresh(ImportAssetOptions.Default);
             }
-
             relativePath = Path.Combine("Assets", relativePath, $"{name}.asset");
             AssetDatabase.CreateAsset(settings, relativePath);
             return settings;
