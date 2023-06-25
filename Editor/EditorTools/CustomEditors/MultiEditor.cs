@@ -12,18 +12,28 @@ namespace Better.EditorTools.CustomEditors
     [CustomEditor(typeof(Object), true)]
     internal sealed class MultiEditor : Editor
     {
-        private List<EditorExtension> _preExtensions;
-        private List<EditorExtension> _afterExtensions;
+        private List<EditorExtension> _preExtensions = new List<EditorExtension>();
+        private List<EditorExtension> _afterExtensions = new List<EditorExtension>();
         private bool _overrideDefault;
 
         private void OnEnable()
         {
+            try
+            {
+                if (target.IsNullOrDestroyed() || serializedObject.IsDisposed())
+                {
+                    return;
+                }
+            }
+            catch
+            {
+                return;
+            }
+
             var targetType = target.GetType();
 
             var extensions = FindEditors(targetType);
 
-            _preExtensions = new List<EditorExtension>();
-            _afterExtensions = new List<EditorExtension>();
             Iterate(extensions);
         }
 
@@ -51,23 +61,17 @@ namespace Better.EditorTools.CustomEditors
 
         private void Iterate(IReadOnlyList<(Type type, BetterEditorAttribute)> extensions)
         {
-            
             var paramArray = new object[2]
             {
                 target, serializedObject
             };
-            
+
             for (var index = 0; index < extensions.Count; index++)
             {
                 var (type, betterEditorAttribute) = extensions[index];
                 if (!_overrideDefault && betterEditorAttribute.OverrideDefaultEditor)
                 {
                     _overrideDefault = true;
-                }
-
-                if (target.IsNullOrDestroyed() || serializedObject.IsDisposed())
-                {
-                    return;
                 }
 
                 var extension = (EditorExtension)Activator.CreateInstance(type, paramArray);
