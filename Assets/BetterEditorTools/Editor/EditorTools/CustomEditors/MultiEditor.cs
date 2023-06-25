@@ -18,6 +18,18 @@ namespace Better.EditorTools.CustomEditors
 
         private void OnEnable()
         {
+            try
+            {
+                if (target.IsNullOrDestroyed() || serializedObject.IsDisposed())
+                {
+                    return;
+                }
+            }
+            catch
+            {
+                return;
+            }
+
             var targetType = target.GetType();
 
             var extensions = FindEditors(targetType);
@@ -51,23 +63,17 @@ namespace Better.EditorTools.CustomEditors
 
         private void Iterate(IReadOnlyList<(Type type, BetterEditorAttribute)> extensions)
         {
-            
             var paramArray = new object[2]
             {
                 target, serializedObject
             };
-            
+
             for (var index = 0; index < extensions.Count; index++)
             {
                 var (type, betterEditorAttribute) = extensions[index];
                 if (!_overrideDefault && betterEditorAttribute.OverrideDefaultEditor)
                 {
                     _overrideDefault = true;
-                }
-
-                if (target.IsNullOrDestroyed() || serializedObject.IsDisposed())
-                {
-                    return;
                 }
 
                 var extension = (EditorExtension)Activator.CreateInstance(type, paramArray);
