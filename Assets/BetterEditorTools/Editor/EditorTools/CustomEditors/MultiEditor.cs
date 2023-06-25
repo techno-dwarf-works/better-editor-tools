@@ -20,6 +20,15 @@ namespace Better.EditorTools.CustomEditors
         {
             var targetType = target.GetType();
 
+            var extensions = FindEditors(targetType);
+
+            _preExtensions = new List<EditorExtension>();
+            _afterExtensions = new List<EditorExtension>();
+            Iterate(extensions);
+        }
+
+        private static IReadOnlyList<(Type type, BetterEditorAttribute)> FindEditors(Type targetType)
+        {
             bool WherePredicate((Type type, BetterEditorAttribute attribute) x)
             {
                 var att = x.Item2;
@@ -36,12 +45,19 @@ namespace Better.EditorTools.CustomEditors
                 return att.EditorFor == targetType;
             }
 
-            var extensions = typeof(EditorExtension).GetAllInheritedType().Select(type => (type, type.GetCustomAttribute<BetterEditorAttribute>()))
+            return typeof(EditorExtension).GetAllInheritedType().Select(type => (type, type.GetCustomAttribute<BetterEditorAttribute>()))
                 .Where(WherePredicate).OrderBy(x => x.Item2.Order).ToArray();
+        }
 
-            _preExtensions = new List<EditorExtension>();
-            _afterExtensions = new List<EditorExtension>();
-            for (int index = 0; index < extensions.Length; index++)
+        private void Iterate(IReadOnlyList<(Type type, BetterEditorAttribute)> extensions)
+        {
+            
+            var paramArray = new object[2]
+            {
+                target, serializedObject
+            };
+            
+            for (var index = 0; index < extensions.Count; index++)
             {
                 var (type, betterEditorAttribute) = extensions[index];
                 if (!_overrideDefault && betterEditorAttribute.OverrideDefaultEditor)
@@ -49,7 +65,12 @@ namespace Better.EditorTools.CustomEditors
                     _overrideDefault = true;
                 }
 
-                var extension = (EditorExtension)Activator.CreateInstance(type, target, serializedObject);
+                if (target.IsNullOrDestroyed() || serializedObject.IsDisposed())
+                {
+                    return;
+                }
+
+                var extension = (EditorExtension)Activator.CreateInstance(type, paramArray);
                 extension.OnEnable();
                 if (betterEditorAttribute.Order < 0)
                 {
