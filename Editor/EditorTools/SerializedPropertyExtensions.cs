@@ -10,8 +10,6 @@ namespace Better.EditorTools
 {
     public static class SerializedPropertyExtensions
     {
-
-
         public static Type GetManagedType(this SerializedProperty property)
         {
 #if UNITY_2021_1_OR_NEWER
@@ -62,6 +60,30 @@ namespace Better.EditorTools
         public static string GetArrayPath(this SerializedProperty property)
         {
             return SerializedPropertyDefines.ArrayRegex.Replace(property.propertyPath, "");
+        }
+        
+        public static bool IsDisposed(this SerializedObject serializedObject)
+        {
+            if (serializedObject == null)
+            {
+                return true;
+            }
+
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", BetterEditorDefines.FieldsFlags);
+            try
+            {
+                if (objectPrtInfo != null)
+                {
+                    var objectPrt = (IntPtr)objectPrtInfo.GetValue(serializedObject);
+                    return objectPrt == IntPtr.Zero;
+                }
+            }
+            catch
+            {
+                return true;
+            }
+
+            return true;
         }
 
         public static bool IsDisposed(this SerializedProperty property)
