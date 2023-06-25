@@ -12,8 +12,8 @@ namespace Better.EditorTools.CustomEditors
     [CustomEditor(typeof(Object), true)]
     internal sealed class MultiEditor : Editor
     {
-        private List<EditorExtension> _preExtensions;
-        private List<EditorExtension> _afterExtensions;
+        private List<EditorExtension> _preExtensions = new List<EditorExtension>();
+        private List<EditorExtension> _afterExtensions = new List<EditorExtension>();
         private bool _overrideDefault;
 
         private void OnEnable()
@@ -34,8 +34,6 @@ namespace Better.EditorTools.CustomEditors
 
             var extensions = FindEditors(targetType);
 
-            _preExtensions = new List<EditorExtension>();
-            _afterExtensions = new List<EditorExtension>();
             Iterate(extensions);
         }
 
