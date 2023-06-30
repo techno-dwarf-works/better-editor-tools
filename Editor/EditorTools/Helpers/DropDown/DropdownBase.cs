@@ -22,10 +22,10 @@ namespace Better.EditorTools.Helpers.DropDown
         public bool Contains(string searchText,
             StringComparison comparison = StringComparison.OrdinalIgnoreCase)
         {
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_3_OR_NEWER
             return Content.text.Contains(searchText, comparison);
 #else
-            return Content.text.IndexOf(searchText, 0, StringComparison.OrdinalIgnoreCase) != -1;
+            return Content.text.IndexOf(searchText, 0, comparison) != -1;
 #endif
         }
     }
