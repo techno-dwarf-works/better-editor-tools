@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Better.EditorTools.SettingsTools
 {
-    public static class BetterSettingsRegisterer
+    public static class ProjectSettingsRegisterer
     {
         public const string BetterPrefix = nameof(Better);
         public const string ProjectPrefix = "Project";
@@ -19,7 +19,7 @@ namespace Better.EditorTools.SettingsTools
         [SettingsProviderGroup]
         internal static SettingsProvider[] CreateSettingsProvider()
         {
-            var allInheritedType = typeof(BetterSettings).GetAllInheritedTypeWithUnityObjects();
+            var allInheritedType = typeof(ProjectSettings).GetAllInheritedTypeWithUnityObjects();
             var types = allInheritedType
                 .SelectMany(CollectionSelector).Where(ValidateInternal);
             var instances = types.Select(Activator.CreateInstance).Cast<SettingsProvider>();
@@ -30,7 +30,7 @@ namespace Better.EditorTools.SettingsTools
 
         private static IEnumerable<Type> CollectionSelector(Type x)
         {
-            return typeof(BetterSettingsProvider<>).MakeGenericType(x).GetAllInheritedType();
+            return typeof(ProjectSettingsProvider<>).MakeGenericType(x).GetAllInheritedType();
         }
 
         private static bool ValidateInternal(Type type)

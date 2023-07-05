@@ -1,9 +1,9 @@
 namespace Better.EditorTools.Helpers.Caching
 {
-    public class Cache<T> where T : class
+    public class Cache<T>
     {
-        public bool IsValid { get; private set; }
-        public T Value { get; private set; }
+        public bool IsValid { get; protected set; }
+        public T Value { get; protected set; }
 
         public void Set(bool isValid, T value)
         {

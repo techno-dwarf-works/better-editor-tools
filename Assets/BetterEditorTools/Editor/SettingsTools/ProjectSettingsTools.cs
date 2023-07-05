@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace Better.EditorTools.SettingsTools
 {
-    public class BetterSettingsTools<T> where T : BetterSettings
+    public class ProjectSettingsTools<T> where T : ProjectSettings
     {
         private readonly string[] _folderPaths;
         public string ProjectSettingKey { get; }
         public string NamespacePrefix { get; }
 
-        public BetterSettingsTools(string namespacePrefix, string settingMenuItem)
+        public ProjectSettingsTools(string namespacePrefix, string settingMenuItem)
         {
             NamespacePrefix = namespacePrefix;
             _folderPaths = new string[]
-                { BetterSettingsRegisterer.BetterPrefix, NamespacePrefix, BetterSettingsRegisterer.ResourcesPrefix };
-            var menuItemPrefix = $"{BetterSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
-            ProjectSettingKey = $"{BetterSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
+                { ProjectSettingsRegisterer.BetterPrefix, NamespacePrefix, ProjectSettingsRegisterer.ResourcesPrefix };
+            var menuItemPrefix = $"{ProjectSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
+            ProjectSettingKey = $"{ProjectSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
         }
 
         private string GenerateResourcesRelativePath()

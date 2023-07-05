@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Better.Extensions.Runtime;
 using UnityEditor;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Better.EditorTools.CustomEditors
