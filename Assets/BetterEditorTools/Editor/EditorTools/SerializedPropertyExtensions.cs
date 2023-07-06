@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Better.Tools.Runtime;
@@ -185,6 +186,69 @@ namespace Better.EditorTools
         public static object GetPropertyContainer(this SerializedProperty property)
         {
             return GetPropertyContainer(property, out _);
+        }
+        
+        private static readonly HashSet<Type> CollectionTypes = new HashSet<Type>
+        {
+            typeof(List<>),
+            typeof(Dictionary<,>),
+            typeof(HashSet<>),
+            typeof(Stack<>),
+            typeof(Queue<>),
+            // Add more collection types here if needed
+        };
+        
+        public static object GetLastNonCollectionContainer(this SerializedProperty property)
+        {
+            var containers = property.GetPropertyContainers();
+            for (var index = containers.Count - 1; index >= 0; index--)
+            {
+                var container = containers[index];
+                if (IsCollectionType(container.GetType())) continue;
+                return container;
+            }
+
+            return containers.FirstOrDefault();
+        }
+
+        private static bool IsCollectionType(this Type targetType)
+        {
+            if (targetType.IsArray || targetType.IsGenericType)
+            {
+                var genericType = targetType.IsArray ? targetType.GetElementType() : targetType.GetGenericArguments()[0];
+                foreach (var collectionType in CollectionTypes)
+                {
+                    var constructedType = collectionType.MakeGenericType(genericType);
+                    if (targetType == constructedType)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        
+        public static List<object> GetPropertyContainers(this SerializedProperty property)
+        {
+            string propertyPath = property.propertyPath;
+            object container = property.serializedObject.targetObject;
+
+            int i = 0;
+            PropertyPathComponent deferredToken;
+            var list = new List<object>();
+            list.Add(container);
+            NextPathComponent(propertyPath, ref i, out deferredToken);
+            while (NextPathComponent(propertyPath, ref i, out var token))
+            {
+                container = GetPathComponentValue(container, deferredToken);
+                deferredToken = token;
+                list.Add(container);
+            }
+            Debug.Assert(!container.GetType().IsValueType,
+                $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary. Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
+
+            return list;
         }
         
         private static object GetPropertyContainer(SerializedProperty property, out PropertyPathComponent deferredToken)
