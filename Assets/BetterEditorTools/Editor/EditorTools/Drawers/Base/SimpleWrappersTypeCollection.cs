@@ -36,7 +36,7 @@ namespace Better.EditorTools.Drawers.Base
 
         public override IEnumerator<Type> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return ((IEnumerable<Type>)_dictionary.Keys).GetEnumerator();
         }
     }
 }
