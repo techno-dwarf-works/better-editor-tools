@@ -55,7 +55,6 @@ namespace Better.EditorTools.Drawers
                 return;
             }
             
-            Debug.Log(nameof(OnGUI));
             if (_rootDrawer.PreDrawInternal(ref position, property, label))
             {
                 _rootDrawer.DrawFieldInternal(position, property, label);
