@@ -37,19 +37,7 @@ namespace Better.EditorTools.Helpers
             HelpBox(message, position, type, CreateOrReturnHelpBoxStyle());
         }
 
-        /// <summary>
-        /// Not supported Inspector HelpBox with RTF text
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="fieldType"></param>
-        /// <param name="attributeType"></param>
-        public static void NotSupportedAttribute(Rect position, string fieldName, Type fieldType, Type attributeType)
-        {
-            HelpBox(position, NotSupportedMessage(fieldName, fieldType, attributeType), IconType.ErrorMessage);
-        }
-
-        private static string NotSupportedMessage(string fieldName, Type fieldType, Type attributeType)
+        public static string NotSupportedMessage(string fieldName, Type fieldType, Type attributeType)
         {
             return
                 $"Field {FormatBold(fieldName)} of type {FormatBold(fieldType.Name)} not supported for {FormatBold(attributeType.Name)}";
@@ -58,13 +46,29 @@ namespace Better.EditorTools.Helpers
         /// <summary>
         /// Not supported Inspector HelpBox with RTF text
         /// </summary>
-        /// <param name="fieldName"></param>
+        /// <param name="position"></param>
+        /// <param name="label"></param>
         /// <param name="fieldType"></param>
         /// <param name="attributeType"></param>
-        public static void NotSupportedAttribute(string fieldName, Type fieldType, Type attributeType,
-            bool useSpace = true)
+        /// <param name="property"></param>
+        public static void NotSupportedAttribute(Rect position, SerializedProperty property, GUIContent label, Type fieldType, Type attributeType)
         {
-            HelpBox(NotSupportedMessage(fieldName, fieldType, attributeType), IconType.ErrorMessage, useSpace);
+            HelpBoxFromRect(position, property, label, NotSupportedMessage(property.name, fieldType, attributeType), IconType.ErrorMessage);
+        }
+
+        public static void HelpBoxFromRect(Rect position, SerializedProperty property, GUIContent label, string message, IconType messageType)
+        {
+            var buffer = new Rect(position);
+            
+            var lab = new GUIContent(label);
+            
+            buffer.y += EditorGUI.GetPropertyHeight(property,label, true) + SpaceHeight;
+            
+            label.image = lab.image;
+            label.text = lab.text;
+            label.tooltip = lab.tooltip;
+            
+            HelpBox(buffer, message, messageType);
         }
 
         public static string FormatBold(string text)
@@ -115,9 +119,10 @@ namespace Better.EditorTools.Helpers
         private static void HelpBox(string message, Rect position, IconType type, GUIStyle style)
         {
             var icon = GetIconName(type);
+            var rect = new Rect(position);
             var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
-            position.height = style.CalcHeight(withIcon, position.width);
-            EditorGUI.LabelField(position, GUIContent.none, withIcon, style);
+            rect.height = style.CalcHeight(withIcon, rect.width);
+            EditorGUI.LabelField(rect, GUIContent.none, withIcon, style);
         }
 
         public static float GetHelpBoxHeight(float width, string message, IconType type)

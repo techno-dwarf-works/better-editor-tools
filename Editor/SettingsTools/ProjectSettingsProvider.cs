@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Better.EditorTools.SettingsTools
 {
-    public abstract class BetterSettingsProvider<T> : SettingsProvider where T : BetterSettings
+    public abstract class ProjectSettingsProvider<T> : SettingsProvider where T : ProjectSettings
     {
         protected readonly T _settings;
         protected readonly SerializedObject _settingsObject;
         private GUIStyle _style;
         private const int Space = 8;
 
-        protected BetterSettingsProvider(BetterSettingsTools<T> tools, SettingsScope scope = SettingsScope.User)
+        protected ProjectSettingsProvider(ProjectSettingsTools<T> tools, SettingsScope scope = SettingsScope.User)
             : base(tools.ProjectSettingKey, scope)
         {
             _settings = tools.LoadOrCreateScriptableObject();

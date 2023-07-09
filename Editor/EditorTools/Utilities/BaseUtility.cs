@@ -15,7 +15,7 @@ namespace Better.EditorTools.Utilities
         private static THandler _instance;
 
         protected HashSet<Type> _availableTypes;
-        protected WrappersTypeCollection _gizmoWrappersCollection;
+        protected BaseWrappersTypeCollection _wrappersCollection;
 
         public static THandler Instance
         {
@@ -37,18 +37,8 @@ namespace Better.EditorTools.Utilities
 
         private void Construct()
         {
-            _gizmoWrappersCollection = GenerateCollection();
+            _wrappersCollection = GenerateCollection();
             _availableTypes = GenerateAvailable();
-        }
-
-        protected Dictionary<Type, Type> GetWrapperDictionary(Type type)
-        {
-            if (_gizmoWrappersCollection.TryGetValue(type, out var dictionary))
-            {
-                return dictionary;
-            }
-
-            throw new KeyNotFoundException($"Supported types not found for {type}");
         }
         
 
@@ -71,7 +61,7 @@ namespace Better.EditorTools.Utilities
         /// <seealso cref="GenerateAvailable"/>
         /// </summary>
         /// <returns></returns>
-        protected abstract WrappersTypeCollection GenerateCollection();
+        protected abstract BaseWrappersTypeCollection GenerateCollection();
 
         /// <summary>
         /// Types collection for <see cref="IsSupported"/> checks
@@ -92,21 +82,22 @@ namespace Better.EditorTools.Utilities
         /// <summary>
         /// Generate ready to use wrapper's instance by dictionary from <see cref="GetWrapperDictionary"/>
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="fieldType"></param>
         /// <param name="attributeType"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetUtilityWrapper<T>(Type type, Type attributeType) where T : UtilityWrapper
+        public T GetUtilityWrapper<T>(Type fieldType, Type attributeType) where T : UtilityWrapper
         {
-            if (!IsSupported(type))
+            if (!IsSupported(fieldType))
             {
                 return null;
             }
 
-            var gizmoWrappers = GetWrapperDictionary(attributeType);
-            var wrapperType = gizmoWrappers[type];
-
-            return (T)Activator.CreateInstance(wrapperType);
+            if (_wrappersCollection.TryGetValue(attributeType, fieldType, out var wrapperType))
+            {
+                return (T)Activator.CreateInstance(wrapperType);
+            }
+            throw new KeyNotFoundException($"Supported types not found for {fieldType}");
         }
 
         /// <summary>

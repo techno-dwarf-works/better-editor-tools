@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Better.Extensions.Runtime;
 using UnityEditor;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Better.EditorTools.CustomEditors
@@ -37,9 +38,9 @@ namespace Better.EditorTools.CustomEditors
             Iterate(extensions);
         }
 
-        private static IReadOnlyList<(Type type, BetterEditorAttribute)> FindEditors(Type targetType)
+        private static IReadOnlyList<(Type type, MultiEditorAttribute)> FindEditors(Type targetType)
         {
-            bool WherePredicate((Type type, BetterEditorAttribute attribute) x)
+            bool WherePredicate((Type type, MultiEditorAttribute attribute) x)
             {
                 var att = x.Item2;
                 if (att == null)
@@ -55,11 +56,11 @@ namespace Better.EditorTools.CustomEditors
                 return att.EditorFor == targetType;
             }
 
-            return typeof(EditorExtension).GetAllInheritedType().Select(type => (type, type.GetCustomAttribute<BetterEditorAttribute>()))
+            return typeof(EditorExtension).GetAllInheritedType().Select(type => (type, type.GetCustomAttribute<MultiEditorAttribute>()))
                 .Where(WherePredicate).OrderBy(x => x.Item2.Order).ToArray();
         }
 
-        private void Iterate(IReadOnlyList<(Type type, BetterEditorAttribute)> extensions)
+        private void Iterate(IReadOnlyList<(Type type, MultiEditorAttribute)> extensions)
         {
             var paramArray = new object[2]
             {

@@ -11,5 +11,7 @@ namespace Better.Tools.Runtime
                                           BindingFlags.DeclaredOnly;
 
         public const BindingFlags FieldsFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        
+        public const BindingFlags ConstructorFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic;
     }
 }
