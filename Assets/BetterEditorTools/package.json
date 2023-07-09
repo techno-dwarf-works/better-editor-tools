@@ -6,7 +6,7 @@
   "unity": "2020.1",
   "dependencies": {
     "com.uurha.betterdatastructures": "0.1.0",
-    "com.uurha.betterextensions": "1.1.7"
+    "com.uurha.betterextensions": "1.1.8"
   },
   "author": {
     "name": "Arcueid D'athemon",

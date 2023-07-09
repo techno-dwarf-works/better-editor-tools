@@ -34,7 +34,7 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            return fieldInfo.GetFieldOrElementType();
+            return _fieldInfo.GetFieldOrElementType();
         }
         
         /// <summary>
@@ -47,7 +47,7 @@ namespace Better.EditorTools.Drawers.Base
         protected Cache ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler)
             where THandler : new()
         {
-            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), attribute.GetType(), handler);
+            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), _attribute.GetType(), handler);
             return CacheField;
         }
 

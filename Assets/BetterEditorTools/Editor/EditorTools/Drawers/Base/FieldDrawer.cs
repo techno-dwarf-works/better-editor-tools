@@ -72,15 +72,15 @@ namespace Better.EditorTools.Drawers.Base
     
     public abstract class FieldDrawer
     {
-        protected readonly FieldInfo fieldInfo;
-        protected readonly MultiPropertyAttribute attribute;
+        protected readonly FieldInfo _fieldInfo;
+        protected readonly MultiPropertyAttribute _attribute;
         protected FieldDrawer _nextDrawer;
 
         protected FieldDrawer(FieldInfo fieldInfo, MultiPropertyAttribute attribute)
         {
             Selection.selectionChanged += OnSelectionChanged;
-            this.fieldInfo = fieldInfo;
-            this.attribute = attribute;
+            _fieldInfo = fieldInfo;
+            _attribute = attribute;
         }
 
         ~FieldDrawer()

@@ -53,6 +53,19 @@ namespace Better.EditorTools
             return -1;
         }
 
+        public static string GetPropertyParentList(this SerializedProperty property)
+        {
+            string propertyPath = property.propertyPath;
+            return GetPropertyParentList(propertyPath);
+        }
+
+        public static string GetPropertyParentList(string propertyPath)
+        {
+            
+            int length = propertyPath.LastIndexOf(".Array.data[", StringComparison.Ordinal);
+            return length < 0 ? (string) null : propertyPath.Substring(0, length);
+        }
+
         public static string GetArrayNameFromPath(this SerializedProperty property)
         {
             return SerializedPropertyDefines.ArrayDataWithIndexRegex.Replace(property.propertyPath, "");
@@ -62,7 +75,7 @@ namespace Better.EditorTools
         {
             return SerializedPropertyDefines.ArrayRegex.Replace(property.propertyPath, "");
         }
-        
+
         public static bool IsDisposed(this SerializedObject serializedObject)
         {
             if (serializedObject == null)
@@ -112,7 +125,7 @@ namespace Better.EditorTools
 
             return true;
         }
-        
+
         public static bool Verify(this SerializedProperty property)
         {
             if (property == null || property.serializedObject == null)
@@ -121,7 +134,7 @@ namespace Better.EditorTools
             }
 
             var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", BetterEditorDefines.FieldsFlags);
-            
+
             try
             {
                 if (verifyMethod != null)
@@ -187,7 +200,7 @@ namespace Better.EditorTools
         {
             return GetPropertyContainer(property, out _);
         }
-        
+
         private static readonly HashSet<Type> CollectionTypes = new HashSet<Type>
         {
             typeof(List<>),
@@ -197,7 +210,7 @@ namespace Better.EditorTools
             typeof(Queue<>),
             // Add more collection types here if needed
         };
-        
+
         public static object GetLastNonCollectionContainer(this SerializedProperty property)
         {
             var containers = property.GetPropertyContainers();
@@ -233,7 +246,7 @@ namespace Better.EditorTools
         {
             string propertyPath = property.propertyPath;
             object container = property.serializedObject.targetObject;
-
+            
             int i = 0;
             PropertyPathComponent deferredToken;
             var list = new List<object>();
@@ -245,12 +258,13 @@ namespace Better.EditorTools
                 deferredToken = token;
                 list.Add(container);
             }
+
             Debug.Assert(!container.GetType().IsValueType,
                 $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary. Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
 
             return list;
         }
-        
+
         private static object GetPropertyContainer(SerializedProperty property, out PropertyPathComponent deferredToken)
         {
             string propertyPath = property.propertyPath;
@@ -263,6 +277,7 @@ namespace Better.EditorTools
                 container = GetPathComponentValue(container, deferredToken);
                 deferredToken = token;
             }
+
             Debug.Assert(!container.GetType().IsValueType,
                 $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary. Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
 
@@ -351,7 +366,7 @@ namespace Better.EditorTools
             if (container == null)
                 return null;
             var type = container.GetType();
-            var members = type.GetMember(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var members = type.GetMember(name, BetterEditorDefines.FieldsFlags);
             for (int i = 0; i < members.Length; ++i)
             {
                 if (members[i] is FieldInfo field)
@@ -366,7 +381,7 @@ namespace Better.EditorTools
         private static void SetMemberValue(object container, string name, object value)
         {
             var type = container.GetType();
-            var members = type.GetMember(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var members = type.GetMember(name, BetterEditorDefines.FieldsFlags);
             for (int i = 0; i < members.Length; ++i)
             {
                 if (members[i] is FieldInfo field)
