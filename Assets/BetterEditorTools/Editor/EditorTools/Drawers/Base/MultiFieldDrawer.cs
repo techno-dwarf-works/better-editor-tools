@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using Better.EditorTools.Comparers;
 using Better.EditorTools.Helpers.Caching;
 using Better.EditorTools.Utilities;
 using Better.Extensions.Runtime;
+using Better.Tools.Runtime.Attributes;
 using UnityEditor;
-using UnityEngine;
 
 namespace Better.EditorTools.Drawers.Base
 {
@@ -20,20 +21,20 @@ namespace Better.EditorTools.Drawers.Base
         /// <returns></returns>
         protected abstract WrapperCollection<T> GenerateCollection();
 
+        public override void Initialize(FieldDrawer drawer)
+        {
+            base.Initialize(drawer);
+            _wrappers = GenerateCollection();
+        }
+
         protected override void Deconstruct()
         {
             _wrappers.Deconstruct();
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            _wrappers ??= GenerateCollection();
-            base.OnGUI(position, property, label);
-        }
-
         protected virtual Type GetFieldOrElementType()
         {
-            return fieldInfo.GetFieldOrElementType();
+            return _fieldInfo.GetFieldOrElementType();
         }
         
         /// <summary>
@@ -46,11 +47,15 @@ namespace Better.EditorTools.Drawers.Base
         protected Cache ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler)
             where THandler : new()
         {
-            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), attribute.GetType(), handler);
+            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), _attribute.GetType(), handler);
             return CacheField;
         }
 
         protected class Cache : Cache<WrapperCollectionValue<T>>
+        {
+        }
+
+        protected MultiFieldDrawer(FieldInfo fieldInfo, MultiPropertyAttribute attribute) : base(fieldInfo, attribute)
         {
         }
     }

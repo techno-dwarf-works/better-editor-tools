@@ -1,6 +1,6 @@
 ﻿namespace Better.EditorTools.SettingsTools
 {
-    public class BetterSettingsToolsContainer<THandler> where THandler : new()
+    public class ProjectSettingsToolsContainer<THandler> where THandler : new()
     {
         private static THandler _instance;
 
