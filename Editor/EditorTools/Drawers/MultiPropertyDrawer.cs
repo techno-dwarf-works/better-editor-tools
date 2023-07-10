@@ -82,21 +82,7 @@ namespace Better.EditorTools.Drawers
 
         private IOrderedEnumerable<MultiPropertyAttribute> GetAttributes(FieldInfo field)
         {
-            return field.GetCustomAttributes<MultiPropertyAttribute>().Distinct(MultiPropertyAttributeComparer.Instance).OrderBy(att => att.order);
-        }
-
-        public class MultiPropertyAttributeComparer : BaseComparer<MultiPropertyAttributeComparer, MultiPropertyAttribute>,
-            IEqualityComparer<MultiPropertyAttribute>
-        {
-            public bool Equals(MultiPropertyAttribute x, MultiPropertyAttribute y)
-            {
-                return y != null && x != null && x.GetType() == y.GetType();
-            }
-
-            public int GetHashCode(MultiPropertyAttribute obj)
-            {
-                return obj.GetType().GetHashCode();
-            }
+            return field.GetCustomAttributes<MultiPropertyAttribute>().OrderBy(att => att.order);
         }
 
         private void TryInitialize()
