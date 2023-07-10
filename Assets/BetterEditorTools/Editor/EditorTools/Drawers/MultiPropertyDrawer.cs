@@ -48,13 +48,13 @@ namespace Better.EditorTools.Drawers
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             TryInitialize();
-            
+
             if (_rootDrawer == null)
             {
                 EditorGUI.PropertyField(position, property, label, true);
                 return;
             }
-            
+
             if (_rootDrawer.PreDrawInternal(ref position, property, label))
             {
                 _rootDrawer.DrawFieldInternal(position, property, label);
@@ -80,12 +80,31 @@ namespace Better.EditorTools.Drawers
             return height.Value;
         }
 
+        private IOrderedEnumerable<MultiPropertyAttribute> GetAttributes(FieldInfo field)
+        {
+            return field.GetCustomAttributes<MultiPropertyAttribute>().Distinct(MultiPropertyAttributeComparer.Instance).OrderBy(att => att.order);
+        }
+
+        public class MultiPropertyAttributeComparer : BaseComparer<MultiPropertyAttributeComparer, MultiPropertyAttribute>,
+            IEqualityComparer<MultiPropertyAttribute>
+        {
+            public bool Equals(MultiPropertyAttribute x, MultiPropertyAttribute y)
+            {
+                return y != null && x != null && x.GetType() == y.GetType();
+            }
+
+            public int GetHashCode(MultiPropertyAttribute obj)
+            {
+                return obj.GetType().GetHashCode();
+            }
+        }
+
         private void TryInitialize()
         {
             if (_initialized) return;
 
             _initialized = true;
-            var attributes = fieldInfo.GetCustomAttributes<MultiPropertyAttribute>().OrderBy(att => att.order);
+            var attributes = GetAttributes(fieldInfo);
             var drawers = new List<FieldDrawer>();
             var param = new object[] { fieldInfo, null };
             foreach (var propertyAttribute in attributes)
