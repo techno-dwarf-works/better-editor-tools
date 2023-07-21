@@ -2,11 +2,11 @@
   "name": "com.uurha.bettereditortools",
   "displayName": "Better Editor Tools",
   "description": "Collection of useful tools for Unity Editor",
-  "version": "1.0.51",
+  "version": "1.0.52",
   "unity": "2020.1",
   "dependencies": {
     "com.uurha.betterdatastructures": "0.1.0",
-    "com.uurha.betterextensions": "1.1.8"
+    "com.uurha.betterextensions": "1.1.91"
   },
   "author": {
     "name": "Arcueid D'athemon",
