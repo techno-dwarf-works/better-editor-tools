@@ -19,6 +19,14 @@ namespace Better.EditorTools.SettingsTools
             var menuItemPrefix = $"{ProjectSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
             ProjectSettingKey = $"{ProjectSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
         }
+        
+        public ProjectSettingsTools(string namespacePrefix, string settingMenuItem, string[] settingsFolderNames)
+        {
+            NamespacePrefix = namespacePrefix;
+            _folderPaths = settingsFolderNames;
+            var menuItemPrefix = $"{ProjectSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
+            ProjectSettingKey = $"{ProjectSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
+        }
 
         private string GenerateResourcesRelativePath()
         {
