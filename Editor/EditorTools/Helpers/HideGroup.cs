@@ -1,27 +1,25 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace Better.EditorTools.Helpers
 {
-    public class HideGroup : GUI.Scope
+    public class HideGroup : EditorGUI.DisabledGroupScope
     {
         private readonly Color _color;
-        private readonly bool _wasEnabled;
 
-        public HideGroup(bool satisfied)
+        public HideGroup(bool satisfied) : base(satisfied)
         {
             _color = GUI.color;
             if (satisfied)
             {
                 GUI.color = Color.clear;
-                GUI.enabled = false;
             }
-            _wasEnabled = GUI.enabled;
         }
 
         protected override void CloseScope()
         {
+            base.CloseScope();
             GUI.color = _color;
-            GUI.enabled = _wasEnabled;
         }
     }
 }
