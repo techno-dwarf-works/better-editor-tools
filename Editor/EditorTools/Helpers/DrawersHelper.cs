@@ -59,15 +59,15 @@ namespace Better.EditorTools.Helpers
         public static void HelpBoxFromRect(Rect position, SerializedProperty property, GUIContent label, string message, IconType messageType)
         {
             var buffer = new Rect(position);
-            
+
             var lab = new GUIContent(label);
-            
-            buffer.y += EditorGUI.GetPropertyHeight(property,label, true) + SpaceHeight;
-            
+
+            buffer.y += EditorGUI.GetPropertyHeight(property, label, true) + SpaceHeight;
+
             label.image = lab.image;
             label.text = lab.text;
             label.tooltip = lab.tooltip;
-            
+
             HelpBox(buffer, message, messageType);
         }
 
@@ -125,25 +125,46 @@ namespace Better.EditorTools.Helpers
             EditorGUI.LabelField(rect, GUIContent.none, withIcon, style);
         }
 
+        /// <summary>
+        /// Override for default Inspector HelpBox with style
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="position"></param>
+        /// <param name="style"></param>
+        private static void HelpBox(Rect position, GUIContent message, GUIStyle style)
+        {
+            EditorGUI.LabelField(position, GUIContent.none, message, style);
+        }
+        
+        /// <summary>
+        /// Override for default Inspector HelpBox with style
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="position"></param>
+        public static void HelpBox(Rect position, GUIContent message)
+        {
+            HelpBox(position, message, CreateOrReturnHelpBoxStyle());
+        }
+
         public static float GetHelpBoxHeight(float width, string message, IconType type)
         {
             var icon = GetIconName(type);
             var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
             return CreateOrReturnHelpBoxStyle().CalcHeight(withIcon, width);
         }
-        
+
         public static float GetHelpBoxHeight(string message, IconType type)
         {
             var icon = GetIconName(type);
             var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
             return CreateOrReturnHelpBoxStyle().CalcHeight(withIcon, EditorGUIUtility.currentViewWidth);
         }
-        
+
         public static float GetHelpBoxHeight(GUIContent message)
         {
             return CreateOrReturnHelpBoxStyle().CalcHeight(message, EditorGUIUtility.currentViewWidth);
         }
-        
+
         public static float GetHelpBoxHeight(string message)
         {
             return GetHelpBoxHeight(new GUIContent(message));
