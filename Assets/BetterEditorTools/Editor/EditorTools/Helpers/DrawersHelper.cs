@@ -131,6 +131,23 @@ namespace Better.EditorTools.Helpers
             var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
             return CreateOrReturnHelpBoxStyle().CalcHeight(withIcon, width);
         }
+        
+        public static float GetHelpBoxHeight(string message, IconType type)
+        {
+            var icon = GetIconName(type);
+            var withIcon = EditorGUIUtility.TrTextContentWithIcon(message, icon);
+            return CreateOrReturnHelpBoxStyle().CalcHeight(withIcon, EditorGUIUtility.currentViewWidth);
+        }
+        
+        public static float GetHelpBoxHeight(GUIContent message)
+        {
+            return CreateOrReturnHelpBoxStyle().CalcHeight(message, EditorGUIUtility.currentViewWidth);
+        }
+        
+        public static float GetHelpBoxHeight(string message)
+        {
+            return GetHelpBoxHeight(new GUIContent(message));
+        }
 
         private static GUIStyle CreateOrReturnHelpBoxStyle()
         {
