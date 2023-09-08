@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Better.Tools.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -277,10 +278,7 @@ namespace Better.EditorTools
                 container = GetPathComponentValue(container, deferredToken);
                 deferredToken = token;
             }
-
-            Debug.Assert(!container.GetType().IsValueType,
-                $"Cannot use SerializedObject.SetValue on a struct object, as the result will be set on a temporary. Either change {container.GetType().Name} to a class, or use SetValue with a parent member.");
-
+            
             return container;
         }
 
@@ -386,12 +384,23 @@ namespace Better.EditorTools
             {
                 if (members[i] is FieldInfo field)
                 {
-                    field.SetValue(container, value);
+                    if(!type.IsValueType && !type.IsEnum)
+                    {
+                        field.SetValue(container, value);
+                    }
+                    else
+                    {
+                        field.SetValueDirect(__makeref(container), value);
+                    }
                     return;
                 }
                 else if (members[i] is PropertyInfo property)
                 {
-                    property.SetValue(container, value);
+                    if (!type.IsValueType && !type.IsEnum)
+                    {
+                        property.SetValue(container, value);
+                    }
+
                     return;
                 }
             }
