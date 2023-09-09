@@ -23,7 +23,6 @@ namespace Better.EditorTools
 
     public static class SerializedPropertyUtil
     {
-        
         [DidReloadScripts]
         private static void Reload()
         {
