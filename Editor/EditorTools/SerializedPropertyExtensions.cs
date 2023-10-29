@@ -62,9 +62,8 @@ namespace Better.EditorTools
 
         public static string GetPropertyParentList(string propertyPath)
         {
-            
             int length = propertyPath.LastIndexOf(".Array.data[", StringComparison.Ordinal);
-            return length < 0 ? (string) null : propertyPath.Substring(0, length);
+            return length < 0 ? (string)null : propertyPath.Substring(0, length);
         }
 
         public static string GetArrayNameFromPath(this SerializedProperty property)
@@ -242,12 +241,12 @@ namespace Better.EditorTools
 
             return false;
         }
-        
+
         public static List<object> GetPropertyContainers(this SerializedProperty property)
         {
             string propertyPath = property.propertyPath;
             object container = property.serializedObject.targetObject;
-            
+
             int i = 0;
             PropertyPathComponent deferredToken;
             var list = new List<object>();
@@ -278,7 +277,7 @@ namespace Better.EditorTools
                 container = GetPathComponentValue(container, deferredToken);
                 deferredToken = token;
             }
-            
+
             return container;
         }
 
@@ -364,16 +363,35 @@ namespace Better.EditorTools
             if (container == null)
                 return null;
             var type = container.GetType();
-            var members = type.GetMember(name, BetterEditorDefines.FieldsFlags);
-            for (int i = 0; i < members.Length; ++i)
+            var members = TraverseBaseClasses(type, name);
+            for (int i = 0; i < members.Count; ++i)
             {
                 if (members[i] is FieldInfo field)
                     return field.GetValue(container);
-                else if (members[i] is PropertyInfo property)
+                
+                if (members[i] is PropertyInfo property)
                     return property.GetValue(container);
             }
 
             return null;
+        }
+
+        private static List<MemberInfo> TraverseBaseClasses(Type currentType, string name)
+        {
+            var memberInfos = new List<MemberInfo>();
+
+            var currentTypeFields = currentType.GetMember(name, BetterEditorDefines.FieldsFlags);
+            memberInfos.AddRange(currentTypeFields);
+
+            var baseType = currentType.BaseType;
+
+            if (baseType == null) return memberInfos;
+            var baseTypeFields = baseType.GetMember(name, BetterEditorDefines.FieldsFlags);
+            memberInfos.AddRange(baseTypeFields);
+
+            memberInfos.AddRange(TraverseBaseClasses(baseType, name)); // Recursively traverse the base classes
+
+            return memberInfos;
         }
 
         private static void SetMemberValue(object container, string name, object value)
@@ -384,7 +402,7 @@ namespace Better.EditorTools
             {
                 if (members[i] is FieldInfo field)
                 {
-                    if(!type.IsValueType && !type.IsEnum)
+                    if (!type.IsValueType && !type.IsEnum)
                     {
                         field.SetValue(container, value);
                     }
@@ -392,6 +410,7 @@ namespace Better.EditorTools
                     {
                         field.SetValueDirect(__makeref(container), value);
                     }
+
                     return;
                 }
                 else if (members[i] is PropertyInfo property)
