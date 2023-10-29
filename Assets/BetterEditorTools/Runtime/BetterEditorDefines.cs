@@ -10,7 +10,7 @@ namespace Better.Tools.Runtime
                                           BindingFlags.Static | BindingFlags.Instance |
                                           BindingFlags.DeclaredOnly;
 
-        public const BindingFlags FieldsFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        public const BindingFlags FieldsFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
         
         public const BindingFlags ConstructorFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic;
     }
