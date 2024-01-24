@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Better.Tools.Runtime;
 using Better.Tools.Runtime.Settings;
 using UnityEditor;
 using UnityEngine;
@@ -15,17 +16,17 @@ namespace Better.EditorTools.SettingsTools
         {
             NamespacePrefix = namespacePrefix;
             _folderPaths = new string[]
-                { ProjectSettingsRegisterer.BetterPrefix, NamespacePrefix, ProjectSettingsRegisterer.ResourcesPrefix };
-            var menuItemPrefix = $"{ProjectSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
-            ProjectSettingKey = $"{ProjectSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
+                { BetterEditorDefines.BetterPrefix, NamespacePrefix, BetterEditorDefines.ResourcesPrefix };
+            var menuItemPrefix = $"{BetterEditorDefines.BetterPrefix}/{settingMenuItem}";
+            ProjectSettingKey = $"{BetterEditorDefines.ProjectPrefix}/{menuItemPrefix}";
         }
         
         public ProjectSettingsTools(string namespacePrefix, string settingMenuItem, string[] settingsFolderNames)
         {
             NamespacePrefix = namespacePrefix;
             _folderPaths = settingsFolderNames;
-            var menuItemPrefix = $"{ProjectSettingsRegisterer.BetterPrefix}/{settingMenuItem}";
-            ProjectSettingKey = $"{ProjectSettingsRegisterer.ProjectPrefix}/{menuItemPrefix}";
+            var menuItemPrefix = $"{BetterEditorDefines.BetterPrefix}/{settingMenuItem}";
+            ProjectSettingKey = $"{BetterEditorDefines.ProjectPrefix}/{menuItemPrefix}";
         }
 
         private string GenerateResourcesRelativePath()
