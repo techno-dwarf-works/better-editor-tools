@@ -11,10 +11,6 @@ namespace Better.EditorTools.SettingsTools
 {
     public static class ProjectSettingsRegisterer
     {
-        public const string BetterPrefix = nameof(Better);
-        public const string ProjectPrefix = "Project";
-        public const string HighlightPrefix = "Highlight Settings";
-        public const string ResourcesPrefix = nameof(Resources);
 
         [SettingsProviderGroup]
         internal static SettingsProvider[] CreateSettingsProvider()

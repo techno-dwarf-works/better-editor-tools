@@ -10,8 +10,8 @@
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.8",
-    "com.uurha.betterdatastructures": "0.1.0",
-    "com.uurha.betterextensions": "1.1.91",
+    "com.uurha.betterdatastructures": "0.1.1",
+    "com.uurha.betterextensions": "1.1.96",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -49,7 +49,8 @@
       "name": "Arcueid Plugins",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.uurha"
+        "com.uurha",
+        "com.tdw"
       ]
     }
   ]
