@@ -1,4 +1,4 @@
-﻿using Better.Tools.Runtime;
+﻿using Better.Internal.Core.Runtime;
 using UnityEditor;
 using UnityEditorInternal;
 
@@ -14,7 +14,7 @@ namespace Better.EditorTools.Helpers
             if (_repaintInspectors == null)
             {
                 var inspWin = typeof(ReorderableList);
-                _repaintInspectors = inspWin.GetMethod("InvalidateParentCaches", BetterEditorDefines.MethodFlags);
+                _repaintInspectors = inspWin.GetMethod("InvalidateParentCaches", Defines.MethodFlags);
             }
 
             if (_repaintInspectors != null) _repaintInspectors.Invoke(null, new object[] { property.propertyPath });

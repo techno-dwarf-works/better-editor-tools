@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Better.Internal.Core.Runtime;
 using Better.Tools.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -83,7 +84,7 @@ namespace Better.EditorTools
                 return true;
             }
 
-            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", BetterEditorDefines.FieldsFlags);
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", Defines.FieldsFlags);
             try
             {
                 if (objectPrtInfo != null)
@@ -107,8 +108,8 @@ namespace Better.EditorTools
                 return true;
             }
 
-            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", BetterEditorDefines.FieldsFlags);
-            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", BetterEditorDefines.FieldsFlags);
+            var propertyPrtInfo = typeof(SerializedProperty).GetField("m_NativePropertyPtr", Defines.FieldsFlags);
+            var objectPrtInfo = typeof(SerializedObject).GetField("m_NativeObjectPtr", Defines.FieldsFlags);
             try
             {
                 if (propertyPrtInfo != null && objectPrtInfo != null)
@@ -133,7 +134,7 @@ namespace Better.EditorTools
                 return false;
             }
 
-            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", BetterEditorDefines.FieldsFlags);
+            var verifyMethod = typeof(SerializedProperty).GetMethod("Verify", Defines.FieldsFlags);
 
             try
             {
@@ -380,13 +381,13 @@ namespace Better.EditorTools
         {
             var memberInfos = new List<MemberInfo>();
 
-            var currentTypeFields = currentType.GetMember(name, BetterEditorDefines.FieldsFlags);
+            var currentTypeFields = currentType.GetMember(name, Defines.FieldsFlags);
             memberInfos.AddRange(currentTypeFields);
 
             var baseType = currentType.BaseType;
 
             if (baseType == null) return memberInfos;
-            var baseTypeFields = baseType.GetMember(name, BetterEditorDefines.FieldsFlags);
+            var baseTypeFields = baseType.GetMember(name, Defines.FieldsFlags);
             memberInfos.AddRange(baseTypeFields);
 
             memberInfos.AddRange(TraverseBaseClasses(baseType, name)); // Recursively traverse the base classes
@@ -397,7 +398,7 @@ namespace Better.EditorTools
         private static void SetMemberValue(object container, string name, object value)
         {
             var type = container.GetType();
-            var members = type.GetMember(name, BetterEditorDefines.FieldsFlags);
+            var members = type.GetMember(name, Defines.FieldsFlags);
             for (int i = 0; i < members.Length; ++i)
             {
                 if (members[i] is FieldInfo field)

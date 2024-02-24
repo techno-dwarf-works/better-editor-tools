@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Better.Tools.Runtime;
+using Better.Internal.Core.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ namespace Better.EditorTools.Helpers
             if (_defaultPropertyField == null)
             {
                 var type = typeof(EditorGUI);
-                _defaultPropertyField = type.GetMethod("DefaultPropertyField", BetterEditorDefines.MethodFlags);
+                _defaultPropertyField = type.GetMethod("DefaultPropertyField", Defines.MethodFlags);
             }
 
             return (bool)_defaultPropertyField.Invoke(null, new object[] { position, property, label });

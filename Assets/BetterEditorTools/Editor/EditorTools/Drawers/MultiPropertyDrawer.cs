@@ -7,6 +7,7 @@ using Better.EditorTools.Attributes;
 using Better.EditorTools.Comparers;
 using Better.EditorTools.Drawers.Base;
 using Better.Extensions.Runtime;
+using Better.Internal.Core.Runtime;
 using Better.Tools.Runtime;
 using Better.Tools.Runtime.Attributes;
 using UnityEditor;
@@ -98,7 +99,7 @@ namespace Better.EditorTools.Drawers
                 if (!_fieldDrawers.TryGetValue(propertyAttribute.GetType(), out var drawerType)) continue;
 
                 param[1] = propertyAttribute;
-                var drawer = (FieldDrawer)Activator.CreateInstance(drawerType, BetterEditorDefines.ConstructorFlags, null, param, null);
+                var drawer = (FieldDrawer)Activator.CreateInstance(drawerType, Defines.ConstructorFlags, null, param, null);
                 drawers.Add(drawer);
             }
 
