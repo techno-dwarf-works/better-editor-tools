@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Better.EditorTools.Drawers.Base;
+using Better.Extensions.Runtime;
 using UnityEditor;
 
 namespace Better.EditorTools.Utilities
 {
-    public abstract class UtilityWrapper
-    {
-        public abstract void Deconstruct();
-    }
-
     public abstract class BaseUtility<THandler> where THandler : new()
     {
         private static THandler _instance;
@@ -40,7 +36,7 @@ namespace Better.EditorTools.Utilities
             _wrappersCollection = GenerateCollection();
             _availableTypes = GenerateAvailable();
         }
-        
+
 
         /// <summary>
         /// Type collection for <see cref="GetUtilityWrapper"/>.
@@ -80,7 +76,7 @@ namespace Better.EditorTools.Utilities
         protected abstract HashSet<Type> GenerateAvailable();
 
         /// <summary>
-        /// Generate ready to use wrapper's instance by dictionary from <see cref="GetWrapperDictionary"/>
+        /// Generate ready to use wrapper's instance by dictionary from <see cref="GenerateCollection"/>
         /// </summary>
         /// <param name="fieldType"></param>
         /// <param name="attributeType"></param>
@@ -88,6 +84,18 @@ namespace Better.EditorTools.Utilities
         /// <returns></returns>
         public T GetUtilityWrapper<T>(Type fieldType, Type attributeType) where T : UtilityWrapper
         {
+            if (fieldType == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(fieldType));
+                return null;
+            }
+
+            if (attributeType == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(attributeType));
+                return null;
+            }
+
             if (!IsSupported(fieldType))
             {
                 return null;
@@ -97,7 +105,9 @@ namespace Better.EditorTools.Utilities
             {
                 return (T)Activator.CreateInstance(wrapperType);
             }
-            throw new KeyNotFoundException($"Supported types not found for {fieldType}");
+
+            DebugUtility.LogException<KeyNotFoundException>($"Supported types not found for {fieldType}");
+            return null;
         }
 
         /// <summary>
@@ -108,12 +118,14 @@ namespace Better.EditorTools.Utilities
         /// <returns></returns>
         public virtual bool IsSupported(Type type)
         {
+            if (type == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(type));
+            }
+
             return _availableTypes.Contains(type);
         }
-    }
-
-    public static class BaseUtilityExtension
-    {
+        
         /// <summary>
         /// Validates stored properties if their <see cref="WrapperCollectionValue{T}.Type"/> supported
         /// </summary>
@@ -121,12 +133,12 @@ namespace Better.EditorTools.Utilities
         /// <param name="gizmoWrappers"></param>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="THandler"></typeparam>
-        public static void ValidateCachedProperties<THandler, T>(this BaseUtility<THandler> handler, WrapperCollection<T> gizmoWrappers) where T : UtilityWrapper where THandler : new()
+        public void ValidateCachedProperties<T>(WrapperCollection<T> gizmoWrappers) where T : UtilityWrapper
         {
             List<SerializedProperty> keysToRemove = null;
             foreach (var value in gizmoWrappers)
             {
-                if (handler.IsSupported(value.Value.Type)) continue;
+                if (IsSupported(value.Value.Type)) continue;
                 if (keysToRemove == null)
                 {
                     keysToRemove = new List<SerializedProperty>();

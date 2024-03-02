@@ -11,7 +11,6 @@ namespace Better.EditorTools.Helpers
         private bool _destroyTexture;
         public event Action Closed;
         public event Action FocusLost;
-
         public event Action Destroyed;
 
         public static EditorPopup Initialize(Texture texture, Rect position, bool needUpdate,

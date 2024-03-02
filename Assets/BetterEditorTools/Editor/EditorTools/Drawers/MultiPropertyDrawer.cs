@@ -27,7 +27,7 @@ namespace Better.EditorTools.Drawers
         [DidReloadScripts]
         private static void OnInitialize()
         {
-            var types = typeof(FieldDrawer).GetAllInheritedType();
+            var types = typeof(FieldDrawer).GetAllInheritedTypesWithoutUnityObject();
             foreach (var type in types)
             {
                 var atts = type.GetCustomAttributes<MultiCustomPropertyDrawer>();

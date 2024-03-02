@@ -11,13 +11,13 @@ namespace Better.EditorTools.Helpers.DropDown
         }
 
         public GUIContent Content { get; }
+        
         internal abstract bool Invoke(DropdownWindow downPopup);
 
         public bool Equals(string value)
         {
             return Content.text.Equals(value);
         }
-
 
         public bool Contains(string searchText,
             StringComparison comparison = StringComparison.OrdinalIgnoreCase)

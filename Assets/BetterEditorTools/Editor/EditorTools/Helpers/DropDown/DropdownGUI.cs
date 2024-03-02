@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Better.DataStructures.Tree;
+using Better.DataStructures.Runtime.Tree;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,8 +8,16 @@ namespace Better.EditorTools.Helpers.DropDown
 {
     internal static class DropdownGUI
     {
-        private static Vector2 iconSize = new Vector2(13f, 13f);
+        private const string SearchFieldName = "SearchField";
+        private static Vector2 _iconSize = new Vector2(13f, 13f);
+        private static readonly MethodInfo _setMouseTooltipMethod;
 
+        static DropdownGUI()
+        {
+            var bindingFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+            _setMouseTooltipMethod = typeof(GUIStyle).GetMethod("SetMouseTooltip",bindingFlags);
+        }
+        
         public static bool DrawItem(TreeNode<DropdownBase> item, bool hasChildren, bool enabled)
         {
             var content = item.Value.Content;
@@ -30,8 +38,7 @@ namespace Better.EditorTools.Helpers.DropDown
             {
                 if (!string.IsNullOrEmpty(content.tooltip))
                 {
-                    var method = typeof(GUIStyle).GetMethod("SetMouseTooltip",BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                    method?.Invoke(null, new object[] { content.tooltip, rect });
+                    _setMouseTooltipMethod?.Invoke(null, new object[] { content.tooltip, rect });
                 }
             }
 
@@ -46,18 +53,18 @@ namespace Better.EditorTools.Helpers.DropDown
             {
                 Styles.CheckMark.Draw(new Rect(rect)
                 {
-                    width = iconSize.x + 1f
+                    width = _iconSize.x + 1f
                 }, GUIContent.none, false, false, isHover, isHover);
                 
-                rect.x += iconSize.x + 1f;
-                rect.width -= iconSize.x + 1f;
+                rect.x += _iconSize.x + 1f;
+                rect.width -= _iconSize.x + 1f;
                 content.image = null;
             }
             else if (content.image == null)
             {
                 Styles.ItemStyle.Draw(rect, GUIContent.none, false, false, isHover, isHover);
-                rect.x += iconSize.x + 1f;
-                rect.width -= iconSize.x + 1f;
+                rect.x += _iconSize.x + 1f;
+                rect.width -= _iconSize.x + 1f;
             }
 
             using (new EditorGUI.DisabledScope(!enabled))
@@ -102,10 +109,10 @@ namespace Better.EditorTools.Helpers.DropDown
         public static string DrawSearchField(string searchString, bool isSearchFieldDisabled)
         {
             if (!isSearchFieldDisabled && string.IsNullOrEmpty(GUI.GetNameOfFocusedControl()))
-                EditorGUI.FocusTextInControl("SearchField");
+                EditorGUI.FocusTextInControl(SearchFieldName);
             using (new EditorGUI.DisabledScope(isSearchFieldDisabled))
             {
-                GUI.SetNextControlName("SearchField");
+                GUI.SetNextControlName(SearchFieldName);
                 var str = DrawSearchFieldControl(searchString);
                 return str;
             }

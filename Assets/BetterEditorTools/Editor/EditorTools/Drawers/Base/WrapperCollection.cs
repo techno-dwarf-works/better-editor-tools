@@ -17,9 +17,9 @@ namespace Better.EditorTools.Drawers.Base
         /// </summary>
         public void Deconstruct()
         {
-            foreach (var gizmo in Values)
+            foreach (var value in Values)
             {
-                gizmo.Wrapper.Deconstruct();
+                value.Wrapper.Deconstruct();
             }
         }
     }
