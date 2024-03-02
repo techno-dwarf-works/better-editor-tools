@@ -1,75 +1,10 @@
 ﻿using System.Reflection;
-using Better.EditorTools.Helpers.Caching;
 using Better.Tools.Runtime.Attributes;
 using UnityEditor;
 using UnityEngine;
 
 namespace Better.EditorTools.Drawers.Base
 {
-    public class HeightCache : Cache<float>
-    {
-        public bool Forced { get; private set; }
-        
-        public HeightCache(bool additional, float height)
-        {
-            IsValid = additional;
-            Value = height;
-        }
-        
-        public HeightCache()
-        {
-            
-        }
-
-        public HeightCache Force()
-        {
-            Forced = true;
-            return this;
-        }
-        
-        public static HeightCache GetAdditive(float height)
-        {
-            var cache = new HeightCache(true, height);
-            return cache;
-        }
-        
-        public static HeightCache GetFull(float height)
-        {
-            var cache = new HeightCache(false, height);
-            return cache;
-        }
-        
-        public static HeightCache operator +(HeightCache left, HeightCache right)
-        {
-            if (left.Forced)
-            {
-                return left;
-            }
-
-            if (right.Forced)
-            {
-                return right;
-            }
-            
-            if (!left.IsValid && !right.IsValid)
-            {
-                return GetFull(Mathf.Max(left.Value, right.Value));
-            }
-
-            if ((!left.IsValid && right.IsValid) || (left.IsValid && !right.IsValid))
-            {
-                return GetFull(left.Value + right.Value);
-            }
-
-            if (left.IsValid && right.IsValid)
-            {
-                return GetAdditive(left.Value + right.Value);
-            }
-            
-            return GetAdditive(0);
-        }
-    }
-    
     public abstract class FieldDrawer
     {
         protected readonly FieldInfo _fieldInfo;
@@ -141,7 +76,7 @@ namespace Better.EditorTools.Drawers.Base
             PostDraw(position, property, label);
         }
 
-        internal HeightCache GetPropertyHeightInternal(SerializedProperty property, GUIContent label)
+        internal HeightCacheValue GetPropertyHeightInternal(SerializedProperty property, GUIContent label)
         {
             var propertyHeight = GetPropertyHeight(property, label);
             if (_nextDrawer != null)
@@ -152,14 +87,14 @@ namespace Better.EditorTools.Drawers.Base
 
             return propertyHeight;
         }
-        
+
         protected abstract bool PreDraw(ref Rect position, SerializedProperty property, GUIContent label);
         protected abstract Rect PreparePropertyRect(Rect original);
         protected abstract void PostDraw(Rect position, SerializedProperty property, GUIContent label);
 
-        protected virtual HeightCache GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected virtual HeightCacheValue GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return HeightCache.GetFull(EditorGUI.GetPropertyHeight(property, label, true));
+            return HeightCacheValue.GetFull(EditorGUI.GetPropertyHeight(property, label, true));
         }
     }
 }

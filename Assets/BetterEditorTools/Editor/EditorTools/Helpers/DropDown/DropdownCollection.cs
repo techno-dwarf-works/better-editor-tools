@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Better.DataStructures.Tree;
+using Better.DataStructures.Runtime.Tree;
+using Better.Extensions.Runtime;
 using UnityEngine;
 
 namespace Better.EditorTools.Helpers.DropDown
@@ -10,6 +11,12 @@ namespace Better.EditorTools.Helpers.DropDown
     {
         public void AddItem(GUIContent[] keys, bool state, Action<object> onSelect, object value)
         {
+            if (keys == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(keys));
+                return;
+            }
+
             var queue = new Queue<GUIContent>(keys);
             var firstKey = queue.Dequeue();
             var item = Children.FirstOrDefault(x => ValidateEquals(x, firstKey));
@@ -46,9 +53,11 @@ namespace Better.EditorTools.Helpers.DropDown
                 var first = bufferItem.Children.FirstOrDefault(x => ValidateEquals(x, bufferKey));
                 if (first == null)
                 {
-                    var node = queue.Count <= 0
-                        ? AddLeaf(bufferItem, bufferKey, state, onSelect, value)
-                        : AddBranch(bufferItem, bufferKey);
+                    TreeNode<DropdownBase> node;
+                    if (queue.Count <= 0)
+                        node = AddLeaf(bufferItem, bufferKey, state, onSelect, value);
+                    else
+                        node = AddBranch(bufferItem, bufferKey);
 
                     if (queue.Count > 0)
                     {

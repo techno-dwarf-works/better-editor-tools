@@ -1,4 +1,5 @@
 ﻿using System;
+using Better.Extensions.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,11 +54,47 @@ namespace Better.EditorTools.Helpers
         /// <param name="property"></param>
         public static void NotSupportedAttribute(Rect position, SerializedProperty property, GUIContent label, Type fieldType, Type attributeType)
         {
+            if (property == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(property));
+                return;
+            }
+
+            if (label == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(label));
+                return;
+            }
+
+            if (fieldType == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(fieldType));
+                return;
+            }
+
+            if (attributeType == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(attributeType));
+                return;
+            }
+
             HelpBoxFromRect(position, property, label, NotSupportedMessage(property.name, fieldType, attributeType), IconType.ErrorMessage);
         }
 
         public static void HelpBoxFromRect(Rect position, SerializedProperty property, GUIContent label, string message, IconType messageType)
         {
+            if (property == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(property));
+                return;
+            }
+
+            if (label == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(label));
+                return;
+            }
+
             var buffer = new Rect(position);
 
             var lab = new GUIContent(label);
@@ -100,6 +137,12 @@ namespace Better.EditorTools.Helpers
         /// <param name="useSpace"></param>
         private static void HelpBox(string message, IconType type, GUIStyle style, bool useSpace)
         {
+            if (style == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(style));
+                return;
+            }
+
             var icon = GetIconName(type);
             if (useSpace)
             {
@@ -135,7 +178,7 @@ namespace Better.EditorTools.Helpers
         {
             EditorGUI.LabelField(position, GUIContent.none, message, style);
         }
-        
+
         /// <summary>
         /// Override for default Inspector HelpBox with style
         /// </summary>
@@ -143,6 +186,12 @@ namespace Better.EditorTools.Helpers
         /// <param name="position"></param>
         public static void HelpBox(Rect position, GUIContent message)
         {
+            if (message == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(message));
+                return;
+            }
+
             HelpBox(position, message, CreateOrReturnHelpBoxStyle());
         }
 
@@ -162,6 +211,12 @@ namespace Better.EditorTools.Helpers
 
         public static float GetHelpBoxHeight(GUIContent message)
         {
+            if (message == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(message));
+                return 0;
+            }
+
             return CreateOrReturnHelpBoxStyle().CalcHeight(message, EditorGUIUtility.currentViewWidth);
         }
 
@@ -279,6 +334,12 @@ namespace Better.EditorTools.Helpers
 
         public static Rect GetClickRect(Rect position, GUIContent label)
         {
+            if (label == null)
+            {
+                DebugUtility.LogException<ArgumentNullException>(nameof(label));
+                return Rect.zero;
+            }
+
             var copy = position;
             copy.size = GUIStyle.none.CalcSize(label);
             return copy;
@@ -317,40 +378,5 @@ namespace Better.EditorTools.Helpers
             var icon = GetIconName(type);
             return EditorGUIUtility.IconContent(icon);
         }
-    }
-
-    public enum IconType
-    {
-        /// <summary>
-        ///   <para>Neutral message.</para>
-        /// </summary>
-        None,
-
-        /// <summary>
-        ///   <para>Info message.</para>
-        /// </summary>
-        InfoMessage,
-
-        /// <summary>
-        ///   <para>Warning message.</para>
-        /// </summary>
-        WarningMessage,
-
-        /// <summary>
-        ///   <para>Error message.</para>
-        /// </summary>
-        ErrorMessage,
-        Info,
-        View,
-        Close,
-        Search,
-        WhiteLine,
-        GrayLine,
-        WhiteDropdown,
-        GrayDropdown,
-        Checkmark,
-        GrayPlayButton,
-        PlusMore,
-        Minus
     }
 }

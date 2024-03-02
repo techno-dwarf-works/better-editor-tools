@@ -2,11 +2,11 @@
   "name": "com.uurha.bettereditortools",
   "displayName": "Better Editor Tools",
   "description": "Collection of useful tools for Unity Editor",
-  "version": "1.0.71",
-  "unity": "2020.1",
+  "version": "1.5.0",
+  "unity": "2021.3",
   "dependencies": {
-    "com.uurha.betterdatastructures": "0.1.2",
-    "com.uurha.betterextensions": "1.2.3",
+    "com.uurha.betterdatastructures": "0.1.7",
+    "com.uurha.betterextensions": "1.5.7",
     "com.tdw.better.internal.core": "0.0.2"
   },
   "author": {

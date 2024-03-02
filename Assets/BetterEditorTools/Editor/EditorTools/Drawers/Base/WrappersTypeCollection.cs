@@ -7,7 +7,7 @@ namespace Better.EditorTools.Drawers.Base
     {
         protected Dictionary<Type, Dictionary<Type, Type>> _dictionary;
         
-        public WrappersTypeCollection() : base()
+        public WrappersTypeCollection()
         {
             _dictionary = new Dictionary<Type, Dictionary<Type, Type>>();
         }

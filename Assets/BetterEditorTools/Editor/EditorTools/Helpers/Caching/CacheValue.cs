@@ -1,6 +1,6 @@
 namespace Better.EditorTools.Helpers.Caching
 {
-    public class Cache<T>
+    public class CacheValue<T>
     {
         public bool IsValid { get; protected set; }
         public T Value { get; protected set; }
@@ -11,9 +11,9 @@ namespace Better.EditorTools.Helpers.Caching
             Value = value;
         }
 
-        public Cache<T> Copy()
+        public CacheValue<T> Copy()
         {
-            return new Cache<T>()
+            return new CacheValue<T>()
             {
                 IsValid = IsValid,
                 Value = Value

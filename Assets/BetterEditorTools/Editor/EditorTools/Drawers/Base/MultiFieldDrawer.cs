@@ -11,9 +11,17 @@ namespace Better.EditorTools.Drawers.Base
 {
     public abstract class MultiFieldDrawer<T> : FieldDrawer where T : UtilityWrapper
     {
-        private static readonly Cache CacheField = new Cache();
+        private static readonly CacheValue CacheValueField = new CacheValue();
 
         protected WrapperCollection<T> _wrappers;
+
+        protected class CacheValue : CacheValue<WrapperCollectionValue<T>>
+        {
+        }
+
+        protected MultiFieldDrawer(FieldInfo fieldInfo, MultiPropertyAttribute attribute) : base(fieldInfo, attribute)
+        {
+        }
 
         /// <summary>
         /// Method generates explicit typed collection inherited from <see cref="WrapperCollection{T}"/> 
@@ -34,9 +42,13 @@ namespace Better.EditorTools.Drawers.Base
 
         protected virtual Type GetFieldOrElementType()
         {
-            return _fieldInfo.GetFieldOrElementType();
+            var fieldType = _fieldInfo.FieldType;
+            if (fieldType.IsArrayOrList())
+                return fieldType.GetCollectionElementType();
+
+            return fieldType;
         }
-        
+
         /// <summary>
         /// Validates if <see cref="_wrappers"/> contains property by <see cref="SerializedPropertyComparer"/>
         /// </summary>
@@ -44,19 +56,11 @@ namespace Better.EditorTools.Drawers.Base
         /// <param name="handler"><see cref="BaseUtility{THandler}"/> used to validate current stored wrappers and gets instance for recently added property</param>
         /// <typeparam name="THandler"></typeparam>
         /// <returns>Returns true if wrapper for <paramref name="property"/> was already stored into <see cref="_wrappers"/></returns>
-        protected Cache ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler)
+        protected CacheValue ValidateCachedProperties<THandler>(SerializedProperty property, BaseUtility<THandler> handler)
             where THandler : new()
         {
-            _wrappers.ValidateCachedProperties(CacheField, property, GetFieldOrElementType(), _attribute.GetType(), handler);
-            return CacheField;
-        }
-
-        protected class Cache : Cache<WrapperCollectionValue<T>>
-        {
-        }
-
-        protected MultiFieldDrawer(FieldInfo fieldInfo, MultiPropertyAttribute attribute) : base(fieldInfo, attribute)
-        {
+            ValidateCachedPropertiesUtility.Validate(_wrappers, CacheValueField, property, GetFieldOrElementType(), _attribute.GetType(), handler);
+            return CacheValueField;
         }
     }
 }
