@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Better.Extensions.EditorAddons;
 using Better.Extensions.Runtime;
 using UnityEditor;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Better.EditorTools.CustomEditors
@@ -56,7 +56,7 @@ namespace Better.EditorTools.CustomEditors
                 return att.EditorFor == targetType;
             }
 
-            return typeof(EditorExtension).GetAllInheritedType().Select(type => (type, type.GetCustomAttribute<MultiEditorAttribute>()))
+            return typeof(EditorExtension).GetAllInheritedTypesWithoutUnityObject().Select(type => (type, type.GetCustomAttribute<MultiEditorAttribute>()))
                 .Where(WherePredicate).OrderBy(x => x.Item2.Order).ToArray();
         }
 
