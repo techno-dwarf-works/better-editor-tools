@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Reflection;
-using Better.EditorTools.Comparers;
-using Better.EditorTools.Helpers.Caching;
-using Better.EditorTools.Utilities;
+using Better.EditorTools.EditorAddons.Comparers;
+using Better.EditorTools.EditorAddons.Helpers.Caching;
+using Better.EditorTools.EditorAddons.Utilities;
+using Better.EditorTools.Runtime.Attributes;
 using Better.Extensions.Runtime;
-using Better.Tools.Runtime.Attributes;
 using UnityEditor;
 
-namespace Better.EditorTools.Drawers.Base
+namespace Better.EditorTools.EditorAddons.Drawers.Base
 {
     public abstract class MultiFieldDrawer<T> : FieldDrawer where T : UtilityWrapper
     {

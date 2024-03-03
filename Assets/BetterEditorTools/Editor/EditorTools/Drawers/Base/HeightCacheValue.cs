@@ -1,9 +1,9 @@
 ﻿using System;
-using Better.EditorTools.Helpers.Caching;
+using Better.EditorTools.EditorAddons.Helpers.Caching;
 using Better.Extensions.Runtime;
 using UnityEngine;
 
-namespace Better.EditorTools.Drawers.Base
+namespace Better.EditorTools.EditorAddons.Drawers.Base
 {
     public class HeightCacheValue : CacheValue<float>
     {

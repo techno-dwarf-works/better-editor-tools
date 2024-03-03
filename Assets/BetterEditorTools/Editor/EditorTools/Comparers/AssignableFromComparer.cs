@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Better.EditorTools.Comparers
+namespace Better.EditorTools.EditorAddons.Comparers
 {
     public class AssignableFromComparer : BaseComparer<AssignableFromComparer, Type>, IEqualityComparer<Type>
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Better.Internal.Core.Runtime;
 using UnityEngine;
 
-namespace Better.Tools.Runtime.Attributes
+namespace Better.EditorTools.Runtime.Attributes
 {
     [Conditional(Defines.Editor)]
     [AttributeUsage(AttributeTargets.Field)]

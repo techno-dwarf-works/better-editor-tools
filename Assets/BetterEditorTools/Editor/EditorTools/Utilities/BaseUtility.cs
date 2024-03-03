@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Better.EditorTools.Drawers.Base;
+using Better.EditorTools.EditorAddons.Drawers.Base;
+using Better.EditorTools.EditorAddons.WrappersTypeCollection;
 using Better.Extensions.Runtime;
 using UnityEditor;
 
-namespace Better.EditorTools.Utilities
+namespace Better.EditorTools.EditorAddons.Utilities
 {
     public abstract class BaseUtility<THandler> where THandler : new()
     {

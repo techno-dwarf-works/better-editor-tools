@@ -1,4 +1,4 @@
-namespace Better.EditorTools.Helpers.Caching
+namespace Better.EditorTools.EditorAddons.Helpers.Caching
 {
     public class CacheValue<T>
     {

@@ -1,6 +1,6 @@
 {
     "name": "BetterEditorTools.Runtime",
-    "rootNamespace": "Better.Tools",
+    "rootNamespace": "Better.EditorTools.Runtime",
     "references": [
         "GUID:01df13aca8d01e24a911bcc3e8277031"
     ],

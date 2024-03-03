@@ -3,7 +3,7 @@ using Better.Internal.Core.Runtime;
 using UnityEditor;
 using UnityEditorInternal;
 
-namespace Better.EditorTools.Helpers
+namespace Better.EditorTools.EditorAddons.Helpers
 {
     public static class ReorderableListHelpers
     {

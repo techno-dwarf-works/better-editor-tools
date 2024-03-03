@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Better.Internal.Core.Runtime;
 
-namespace Better.EditorTools.Attributes
+namespace Better.EditorTools.EditorAddons.Attributes
 {
     [Conditional(Defines.Editor)]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

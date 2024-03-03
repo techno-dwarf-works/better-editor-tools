@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Better.EditorTools.Helpers
+namespace Better.EditorTools.EditorAddons.Helpers
 {
     public class EditorPopup : EditorWindow
     {
