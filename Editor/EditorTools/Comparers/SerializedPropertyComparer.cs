@@ -2,7 +2,7 @@
 using Better.Extensions.EditorAddons;
 using UnityEditor;
 
-namespace Better.EditorTools.Comparers
+namespace Better.EditorTools.EditorAddons.Comparers
 {
     public class SerializedPropertyComparer : BaseComparer<SerializedPropertyComparer, SerializedProperty>,
         IEqualityComparer<SerializedProperty>

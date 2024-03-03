@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Better.EditorTools.CustomEditors
+namespace Better.EditorTools.EditorAddons.CustomEditors
 {
     /// <summary>
     /// Class represents base types for <see cref="MultiEditor"/>

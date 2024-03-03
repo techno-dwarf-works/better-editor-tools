@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using Better.Tools.Runtime.Attributes;
+using Better.EditorTools.Runtime.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace Better.EditorTools.Drawers.Base
+namespace Better.EditorTools.EditorAddons.Drawers.Base
 {
     public abstract class FieldDrawer
     {

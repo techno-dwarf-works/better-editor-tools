@@ -4,7 +4,7 @@ using Better.DataStructures.Runtime.Tree;
 using UnityEditor;
 using UnityEngine;
 
-namespace Better.EditorTools.Helpers.DropDown
+namespace Better.EditorTools.EditorAddons.Helpers.DropDown
 {
     internal static class DropdownGUI
     {

@@ -5,7 +5,7 @@ using Better.DataStructures.Runtime.Tree;
 using Better.Extensions.Runtime;
 using UnityEngine;
 
-namespace Better.EditorTools.Helpers.DropDown
+namespace Better.EditorTools.EditorAddons.Helpers.DropDown
 {
     public class DropdownCollection : TreeNode<DropdownBase>
     {

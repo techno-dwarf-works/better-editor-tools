@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Better.EditorTools.Drawers.Base
+namespace Better.EditorTools.EditorAddons.WrappersTypeCollection
 {
     public class AttributeWrappersTypeCollection : BaseWrappersTypeCollection
     {
