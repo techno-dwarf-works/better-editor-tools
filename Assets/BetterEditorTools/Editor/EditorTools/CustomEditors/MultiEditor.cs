@@ -7,7 +7,7 @@ using Better.Extensions.Runtime;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace Better.EditorTools.CustomEditors
+namespace Better.EditorTools.EditorAddons.CustomEditors
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(Object), true)]

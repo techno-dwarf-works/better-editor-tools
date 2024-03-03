@@ -1,4 +1,4 @@
-﻿namespace Better.EditorTools.Helpers
+﻿namespace Better.EditorTools.EditorAddons.Helpers
 {
     public enum IconType
     {

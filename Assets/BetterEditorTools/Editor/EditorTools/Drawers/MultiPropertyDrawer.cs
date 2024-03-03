@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Better.EditorTools.Attributes;
-using Better.EditorTools.Comparers;
-using Better.EditorTools.Drawers.Base;
+using Better.EditorTools.EditorAddons.Attributes;
+using Better.EditorTools.EditorAddons.Comparers;
+using Better.EditorTools.EditorAddons.Drawers.Base;
+using Better.EditorTools.Runtime.Attributes;
 using Better.Extensions.Runtime;
 using Better.Internal.Core.Runtime;
-using Better.Tools.Runtime;
-using Better.Tools.Runtime.Attributes;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Better.EditorTools.Drawers
+namespace Better.EditorTools.EditorAddons.Drawers
 {
     [CustomPropertyDrawer(typeof(MultiPropertyAttribute), true)]
     public sealed class MultiPropertyDrawer : PropertyDrawer

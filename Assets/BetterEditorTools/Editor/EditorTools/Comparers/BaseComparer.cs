@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Better.EditorTools.Comparers
+namespace Better.EditorTools.EditorAddons.Comparers
 {
     public abstract class BaseComparer<T, U> where T : IEqualityComparer<U>, new()
     {

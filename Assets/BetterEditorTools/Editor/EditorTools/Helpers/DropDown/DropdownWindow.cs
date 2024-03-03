@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Better.EditorTools.Helpers.DropDown
+namespace Better.EditorTools.EditorAddons.Helpers.DropDown
 {
     public class DropdownWindow : EditorWindow
     {

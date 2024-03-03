@@ -1,4 +1,4 @@
-﻿namespace Better.EditorTools.Utilities
+﻿namespace Better.EditorTools.EditorAddons.Utilities
 {
     public abstract class UtilityWrapper
     {

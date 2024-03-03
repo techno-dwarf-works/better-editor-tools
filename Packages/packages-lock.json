@@ -152,7 +152,7 @@
       "url": "https://package.openupm.com"
     },
     "com.uurha.betterextensions": {
-      "version": "1.5.7",
+      "version": "1.5.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {

@@ -1,10 +1,10 @@
 using System;
-using Better.EditorTools.Drawers.Base;
-using Better.EditorTools.Utilities;
+using Better.EditorTools.EditorAddons.Drawers.Base;
+using Better.EditorTools.EditorAddons.Utilities;
 using Better.Extensions.Runtime;
 using UnityEditor;
 
-namespace Better.EditorTools.Helpers.Caching
+namespace Better.EditorTools.EditorAddons.Helpers.Caching
 {
     public static class ValidateCachedPropertiesUtility
     {
