@@ -1,7 +1,7 @@
 # [Deprecated] Better Editor Tools
 
-# !! New Repo !!
-This plugin is deprecated, replaced with - [Better Commons](https://github.com/techno-dwarf-works/better-commons)
+> [!CAUTION]
+> Package deprecated and replaced with - [Better Commons](https://github.com/techno-dwarf-works/better-commons)
 
 [![openupm](https://img.shields.io/npm/v/com.uurha.bettereditortools?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.uurha.bettereditortools/)
 
